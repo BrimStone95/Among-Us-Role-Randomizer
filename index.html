@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OBS Overlay - Randomizer Ruoli</title>
+    <style>
+        /* Sfondo trasparente per OBS */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: transparent; 
+            color: #ffffff;
+            text-align: center;
+            padding: 20px;
+            margin: 0;
+            /* Nasconde la barra di scorrimento laterale su OBS */
+            overflow-y: scroll; 
+            scrollbar-width: none; 
+        }
+        body::-webkit-scrollbar { 
+            display: none; 
+        }
+
+        h1 {
+            color: #ff4757;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8);
+        }
+
+        /* Pannello di controllo semitrasparente */
+        .controls {
+            margin-bottom: 30px;
+            background-color: rgba(47, 53, 66, 0.85);
+            padding: 20px;
+            border-radius: 10px;
+            display: inline-block;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
+        }
+
+        select, button {
+            padding: 10px 15px;
+            font-size: 16px;
+            margin: 5px;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+        }
+
+        select {
+            background-color: #ffffff;
+            color: #000000;
+        }
+
+        .btn-draw {
+            background-color: #2ed573;
+            color: white;
+            font-weight: bold;
+        }
+        .btn-draw:hover {
+            background-color: #27ae60;
+        }
+
+        .btn-reset {
+            background-color: #ff4757;
+            color: white;
+            font-weight: bold;
+        }
+        .btn-reset:hover {
+            background-color: #e84118;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            max-width: 1600px;
+            margin: 0 auto;
+            padding-bottom: 50px;
+        }
+
+        /* Carte con sfondo semitrasparente e ombra marcata per staccarsi dallo sfondo del gioco */
+        .card {
+            background-color: rgba(47, 53, 66, 0.95);
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.8);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: transform 0.2s;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .card:hover {
+            transform: scale(1.05);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        .card img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            min-height: 250px;
+            object-fit: contain;
+            filter: drop-shadow(0px 4px 6px rgba(0,0,0,0.5));
+        }
+
+        .card-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+        }
+
+        .card-category {
+            font-size: 15px;
+            color: #ced6e0;
+            background-color: rgba(0, 0, 0, 0.3);
+            padding: 4px 10px;
+            border-radius: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Estrazione Ruoli</h1>
+    
+    <div class="controls">
+        <label for="cardCount">Carte da estrarre: </label>
+        <select id="cardCount">
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+            <option value="11">11</option>
+            <option value="12">12</option>
+            <option value="13">13</option>
+            <option value="14">14</option>
+            <option value="15">15</option>
+        </select>
+        <button class="btn-draw" onclick="drawCards(false)">Estrai / Aggiungi</button>
+        <button class="btn-reset" onclick="drawCards(true)">Resetta Tutto</button>
+    </div>
+
+    <div class="cards-grid" id="cardsContainer"></div>
+
+    <script>
+        const imagesMap = {
+            "Accalappiatore": "https://i.postimg.cc/0QKBQWHm/Accalappiatore.png",
+            "Alchimista": "https://i.postimg.cc/G2T527S6/Alchimista.png",
+            "Altruista": "https://i.postimg.cc/VvyHbq37/Altruista.png",
+            "Amministratore": "https://i.postimg.cc/hjQ5jy3H/Amministratore.png",
+            "Analista": "https://i.postimg.cc/wMKbsXSf/Analista.png",
+            "Astrologo": "https://i.postimg.cc/prN1nfwm/Astrologo.png",
+            "Barbiere": "https://i.postimg.cc/d38NR7FJ/Barbiere.png",
+            "Bodyguard": "https://i.postimg.cc/VvyHbqxr/Bodyguard.png",
+            "Camaleonte": "https://i.postimg.cc/prDcQ9vr/Camaleonte.png",
+            "Cameraman": "https://i.postimg.cc/HnQv0Jmr/Cameraman.png",
+            "Canalista": "https://i.postimg.cc/WzMYmDV0/Canalista.png",
+            "Candeliere": "https://i.postimg.cc/rsSZGdTN/Candeliere.png",
+            "Capitano": "https://i.postimg.cc/mkQp3c4j/Capitano.png",
+            "Cartomante": "https://i.postimg.cc/Kjnp7KbJ/Cartomante.png",
+            "Celebrità": "https://i.postimg.cc/kM8HPHSr/Celebrita.png",
+            "Chiacchierone": "https://i.postimg.cc/bYb5f5nP/Chiacchierone.png",
+            "Confessore": "https://i.postimg.cc/2jvtNtWS/Confessore.png",
+            "Controllore": "https://i.postimg.cc/BQ0VSC5w/Controllore.png",
+            "Cospiratore": "https://i.postimg.cc/fTfgJ055/Cospiratore.png",
+            "Crittografo": "https://i.postimg.cc/vHsNYv7c/Crittografo.png",
+            "Crociato": "https://i.postimg.cc/WbvHN7mk/Crociato.png",
+            "Demolitore": "https://i.postimg.cc/YqHsrxND/Demolitore.png",
+            "Dittatore": "https://i.postimg.cc/dtYxs9Rg/Dittatore.png",
+            "Dottore": "https://i.postimg.cc/gkHBn641/Dottore.png",
+            "Druido": "https://i.postimg.cc/SNftJzDk/Druido.png",
+            "Enigmista": "https://i.postimg.cc/3JFbdDnJ/Enigmista.png",
+            "Fuggitivo": "https://i.postimg.cc/RVLbNnXZ/Fuggitivo.png",
+            "Giardiniere": "https://i.postimg.cc/K89q5S6P/Giardiniere.png",
+            "Giornalista": "https://i.postimg.cc/qvBDnM5n/Giornalista.png",
+            "Giudice": "https://i.postimg.cc/HkWv5sh2/Giudice.png",
+            "Granatiere": "https://i.postimg.cc/YC2DgqsY/Granatiere.png",
+            "Guardiano Notturno": "https://i.postimg.cc/dVWH9PbH/Guardiano-Notturno.png",
+            "Inquirente": "https://i.postimg.cc/13WCKhkd/Inquirente.png",
+            "Inquisitore": "https://i.postimg.cc/sgn6Jdkk/Inquisitore.png",
+            "Ispettore": "https://i.postimg.cc/d0LWHNFH/Ispettore.png",
+            "Maestro del tempo": "https://i.postimg.cc/fbJH2qs1/Maestro-del-tempo.png",
+            "Matematico": "https://i.postimg.cc/QMH64YDR/Matematico.png",
+            "Medico": "https://i.postimg.cc/1zfWC7P1/Medico.png",
+            "Menestrello": "https://i.postimg.cc/GpHM7grR/Menestrello.png",
+            "Miracolato": "https://i.postimg.cc/mrJm032S/Miracolato.png",
+            "Moderatore": "https://i.postimg.cc/KYR9qpF4/Moderatore.png",
+            "Non-Morto": "https://i.postimg.cc/g0nMStdL/Non-Morto.png",
+            "Onnisciente": "https://i.postimg.cc/FK8T2bsf/Onnisciente.png",
+            "Oracolo": "https://i.postimg.cc/vmk0p7H5/Oracolo.png",
+            "Pacifista": "https://i.postimg.cc/3RGt7ykM/Pacifista.png",
+            "Patologo": "https://i.postimg.cc/0NFVLG2f/Patologo.png",
+            "Portalista": "https://i.postimg.cc/1tFvPgfk/Portalista.png",
+            "Premonitore": "https://i.postimg.cc/LXPxRqnW/Premonitore.png",
+            "Prestigiatore": "https://i.postimg.cc/tT6By1Y8/Prestigiatore.png",
+            "Protettore": "https://i.postimg.cc/Qt7fsBFj/Protettore.png",
+            "Psichico": "https://i.postimg.cc/D0KBz2GK/Psichico.png",
+            "Retribuzionista": "https://i.postimg.cc/yxzvNVRs/Retribuzionista.png",
+            "Riparatore": "https://i.postimg.cc/C5VmKF8L/Riparatore.png",
+            "Scambiatore": "https://i.postimg.cc/yxzvNVRd/Scambiatore.png",
+            "Sceriffo": "https://i.postimg.cc/tJH2gX6n/Sceriffo.png",
+            "Sentinella": "https://i.postimg.cc/hvqpGSmm/Sentinella.png",
+            "Sindaco": "https://i.postimg.cc/mkG8rb9M/Sindaco.png",
+            "Spia": "https://i.postimg.cc/tJtDZLdT/Spia.png",
+            "Telecomunicatore": "https://i.postimg.cc/QCkS9RgW/Telecomunicatore.png",
+            "Testimone": "https://i.postimg.cc/d3mnkzRG/Testimone.png",
+            "Vedetta": "https://i.postimg.cc/FzgGd2bb/Vedetta.png",
+            "Veggente": "https://i.postimg.cc/Y0f8GJNx/Veggente.png",
+            "Veterano": "https://i.postimg.cc/Wz6SFQmY/Veterano.png",
+            "Astrale": "https://i.postimg.cc/7ZR165Xv/Astrale.png",
+            
+            "Abissale": "https://i.postimg.cc/kX2vd6zh/Abissale.png",
+            "Accecatore": "https://i.postimg.cc/c4vBNg2X/Accecatore.png",
+            "Anonimo": "https://i.postimg.cc/NfKkw9Sd/Anonimo.png",
+            "Assessore": "https://i.postimg.cc/7Y5nyGdt/Assessore.png",
+            "Bombarolo": "https://i.postimg.cc/VLJWcrpT/Bombarolo.png",
+            "Burattinaio": "https://i.postimg.cc/sDM4RQqq/Burattinaio.png",
+            "Cacciatore di taglie": "https://i.postimg.cc/VL2BssPg/Cacciatore-Di-Taglie.png",
+            "Camuffatore": "https://i.postimg.cc/X7tcNN6H/Camuffatore.png",
+            "Carnefice": "https://i.postimg.cc/65FL66xb/Carnefice.png",
+            "Cronomante": "https://i.postimg.cc/5NDq99WZ/Cronomante.png",
+            "Dispersore": "https://i.postimg.cc/gk1qccPb/Dispersore.png",
+            "Esorcista": "https://i.postimg.cc/x1HGXr0k/Esorcista.png",
+            "Evasore": "https://i.postimg.cc/gk1qccPG/Evasore.png",
+            "Fabbricatore": "https://i.postimg.cc/ZKXFYYh4/Fabbricatore.png",
+            "Forgiatore": "https://i.postimg.cc/RZf1WrMB/Forgiatore.png",
+            "Indovino Malvagio": "https://i.postimg.cc/MpR0nkWD/Indovino-Malvagio.png",
+            "Influencer": "https://i.postimg.cc/g0WVRMJR/Influencer.png",
+            "Ingannatore": "https://i.postimg.cc/5tVBvP05/Ingannatore.png",
+            "Intercettatore": "https://i.postimg.cc/k5mQ8j4y/Intercettatore.png",
+            "Inversore": "https://i.postimg.cc/6QXrRH3M/Inversore.png",
+            "Ipnotista": "https://i.postimg.cc/pdHf80TG/Ipnotista.png",
+            "Istigatore": "https://i.postimg.cc/0NsYmtQH/Istigatore.png",
+            "Ladro del Tempo": "https://i.postimg.cc/k5mQ8j4z/Ladro-Del-Tempo.png",
+            "Limitatore": "https://i.postimg.cc/HLgw5Sxf/Limitatore.png",
+            "Ludopatico": "https://i.postimg.cc/xd2vHs8D/Ludopatico.png",
+            "Macchina Assassina": "https://i.postimg.cc/Lsptfy5M/Macchina-Assassina.png",
+            "Macellaio": "https://i.postimg.cc/XvkwgwGH/Macellaio.png",
+            "Mafioso": "https://i.postimg.cc/fbfxvxtr/Mafioso.png",
+            "Ninja": "https://i.postimg.cc/QMJpqp9v/Ninja.png",
+            "Ostruzionista": "https://i.postimg.cc/mryQSQz0/Ostruzionista.png",
+            "Pietrificatore": "https://i.postimg.cc/cJBQcQtq/Pietrificatore.png",
+            "Posticipatore": "https://i.postimg.cc/fbfxvxSQ/Posticipatore.png",
+            "Pulitore": "https://i.postimg.cc/hG1909Qg/Pulitore.png",
+            "Revocatore": "https://i.postimg.cc/vmtWvWxb/Revocatore.png",
+            "Ricattatore": "https://i.postimg.cc/q7x8G86k/Ricattatore.png",
+            "Rivendicatore": "https://i.postimg.cc/9fYGBGwX/Rivendicatore.png",
+            "Sacrificatore": "https://i.postimg.cc/GpxkjkTT/Sacrificatore.png",
+            "Scambista": "https://i.postimg.cc/2574x4Ly/Scambista.png",
+            "Segugio Malvagio": "https://i.postimg.cc/7LngNgJb/Segugio-Malvagio.png",
+            "Spaventatore": "https://i.postimg.cc/mryQSQ1z/Spaventatore.png",
+            "Strega": "https://i.postimg.cc/zBDT2VTz/Strega.png",
+            "Tiratore Rapido": "https://i.postimg.cc/G23vgHvH/Tiratore-Rapido.png",
+            "Trappolatore": "https://i.postimg.cc/xCjLpcLJ/Trappolatore.png",
+            "Vampiro": "https://i.postimg.cc/k4MWYBWK/Vampiro.png",
+            "Veggente Malvagio": "https://i.postimg.cc/76PStfSS/Veggente-Malvagio.png",
+            "Ventriloquo": "https://i.postimg.cc/9MXygryd/Ventriloquo.png",
+            "Swooper": "https://i.postimg.cc/mDNSMtqw/Swooper.png",
+
+            "Amnesico": "https://i.postimg.cc/76cb169Z/Amnesico.png",
+            "Avvocato": "https://i.postimg.cc/50Gj50g9/Avvocato.png",
+            "Necrologo": "https://i.postimg.cc/BbKbm07B/Necrologo.png",
+            "Postino": "https://i.postimg.cc/XqCqsb1g/Postino.png",
+            "Avvoltoio": "https://i.postimg.cc/ZRg0PRH9/Avvoltoio.png",
+            "Esecutore": "https://i.postimg.cc/sX81PXm1/Esecutore.png",
+            "Giullare": "https://i.postimg.cc/KjMj02pG/Giullare.png",
+            "Innocente": "https://i.postimg.cc/QCTCf3YY/Innocente.png",
+            "Profeta": "https://i.postimg.cc/tJxJBjvk/Profeta.png",
+
+            "Accumulatore": "https://i.postimg.cc/RFZJvXmB/Accumulatore.png",
+            "Agitatore": "https://i.postimg.cc/Kz83mJbZ/Agitatore.png",
+            "Borseggiatore": "https://i.postimg.cc/gJ2LGNpz/Borseggiatore.png",
+            "Collezionista di Anime": "https://i.postimg.cc/nzSjrBVT/Collezionista.png",
+            "Corruttore": "https://i.postimg.cc/hvHXbndD/Corruttore.png",
+            "Ammaliatore": "https://i.postimg.cc/wvjR90zv/Ammaliatore.png",
+            "Invocatore di spiriti": "https://i.postimg.cc/Vv3JBwCm/Invocatore-Di-Spiriti.png",
+            "Lupo Mannaro": "https://i.postimg.cc/d3zhmFyJ/Lupo-Mannaro.png",
+            "Mago": "https://i.postimg.cc/9XSwjdn4/Mago.png",
+            "Occultista": "https://i.postimg.cc/MZ4f87FQ/Occultista.png",
+            "Pellicano": "https://i.postimg.cc/8zgF71Gm/Pellicano.png",
+            "Ritualista": "https://i.postimg.cc/K8hK1ZFb/Ritualista.png",
+            "Serial Killer": "https://i.postimg.cc/13086L5g/Serial-Killer.png",
+            "Persuasore": "https://i.postimg.cc/Bnf8jq3C/Persuasore.png",
+            "Spirito": "https://i.postimg.cc/rp8K9QKR/Spirito.png",
+            "Untore": "https://i.postimg.cc/xdtqpMzx/Untore.png",
+            "Maestro delle armi": "https://i.postimg.cc/4yrYbG9B/Maestro-Delle-Armi.png",
+
+            "Augure": "https://i.postimg.cc/7Y1SgFCn/Augure.png",
+            "Banshee": "https://i.postimg.cc/W4tx7zc0/Banshee.png",
+            "Bracconiere": "https://i.postimg.cc/9fzsB0H4/Bracconiere.png",
+            "Dea": "https://i.postimg.cc/XvXtgq6y/Dea.png",
+            "Evocatore": "https://i.postimg.cc/YSjTx0BL/Evocatore.png",
+            "Incantatore": "https://i.postimg.cc/HLjFtn13/Incantatore.png",
+            "Maestro Voodoo": "https://i.postimg.cc/zf34kvYt/Maestro-Vodoo.png",
+            "Mietitore": "https://i.postimg.cc/YqB1LrSD/Mietitore.png",
+            "Ombra": "https://i.postimg.cc/tg78zJH0/Ombra.png",
+            "Pozionista": "https://i.postimg.cc/MGXgYH82/Pozionista.png",
+            "Sirena": "https://i.postimg.cc/tCdFhK1z/Sirena.png",
+            "Tessitore di Sogni": "https://i.postimg.cc/9fSKg2ck/Tessitore-di-Sogni.png"
+        };
+
+        const basePools = {
+            "astronauti_controllo": ["Accalappiatore", "Amministratore", "Analista", "Camaleonte", "Candeliere", "Capitano", "Cartomante", "Controllore", "Cospiratore", "Crittografo", "Dottore", "Druido", "Enigmista", "Inquirente", "Inquisitore", "Ispettore", "Patologo", "Premonitore", "Psichico", "Spia", "Telecomunicatore", "Testimone", "Vedetta", "Veggente", "Moderatore", "Onnisciente", "Oracolo", "Non-Morto"],
+            "astronauti_protezione": ["Medico", "Altruista", "Bodyguard", "Crociato", "Protettore", "Giardiniere", "Confessore", "Pacifista", "Matematico"],
+            "astronauti_vari": ["Cameraman", "Sindaco", "Barbiere", "Celebrità", "Demolitore", "Fuggitivo", "Giornalista", "Guardiano Notturno", "Portalista", "Canalista", "Alchimista", "Dittatore", "Miracolato", "Chiacchierone", "Granatiere", "Maestro del tempo", "Menestrello", "Prestigiatore", "Riparatore", "Astrale", "Scambiatore"],
+            "neutrali_passivi": ["Amnesico", "Avvocato", "Necrologo", "Postino", "Avvoltoio", "Esecutore", "Giullare", "Innocente", "Profeta"],
+            "impostori": ["Abissale", "Assessore", "Bombarolo", "Cacciatore di taglie", "Carnefice", "Cronomante", "Mafioso", "Indovino Malvagio", "Macchina Assassina", "Ninja", "Sacrificatore", "Strega", "Tiratore Rapido", "Trappolatore", "Influencer", "Camuffatore", "Pulitore", "Inversore", "Ipnotista", "Istigatore", "Ladro del Tempo", "Limitatore", "Pietrificatore", "Revocatore", "Ricattatore", "Rivendicatore", "Scambista", "Dispersore", "Ventriloquo", "Accecatore", "Anonimo", "Burattinaio", "Evasore", "Fabbricatore", "Forgiatore", "Ingannatore", "Posticipatore", "Swooper", "Vampiro", "Veggente Malvagio", "Esorcista", "Ludopatico", "Intercettatore", "Ostruzionista", "Segugio Malvagio", "Spaventatore", "Macellaio"],
+            "astronauti_uccisore": ["Astrologo", "Giudice", "Retribuzionista", "Sceriffo", "Sentinella", "Veterano"],
+            "neutrali_assassini": ["Accumulatore", "Agitatore", "Borseggiatore", "Collezionista di Anime", "Corruttore", "Ammaliatore", "Invocatore di spiriti", "Lupo Mannaro", "Mago", "Occultista", "Pellicano", "Ritualista", "Serial Killer", "Persuasore", "Spirito", "Untore", "Maestro delle armi"],
+            "congrega": ["Augure", "Banshee", "Bracconiere", "Dea", "Evocatore", "Incantatore", "Maestro Voodoo", "Mietitore", "Ombra", "Pozionista", "Sirena", "Tessitore di Sogni"]
+        };
+
+        const sequenceLabels = {
+            "astronauti_controllo": "Astronauti - Controllo",
+            "astronauti_protezione": "Astronauti - Protezione",
+            "astronauti_vari": "Astronauti - Vari",
+            "neutrali_passivi": "Neutrali - Passivi",
+            "impostori": "Impostori",
+            "astronauti_uccisore": "Astronauti - Uccisore",
+            "neutrali_assassini": "Neutrali - Assassini",
+            "congrega": "Congrega"
+        };
+
+        const drawSequence = [
+            "astronauti_controllo",
+            "astronauti_protezione",
+            "astronauti_vari",
+            "astronauti_vari",
+            "astronauti_vari",
+            "astronauti_vari",
+            "neutrali_passivi",
+            "impostori",
+            "impostori",
+            "astronauti_uccisore",
+            "astronauti_vari",
+            "neutrali_assassini",
+            "astronauti_vari",
+            "astronauti_vari",
+            "congrega"
+        ];
+
+        let activePools = {};
+        let drawnRoles = [];
+
+        function initPools() {
+            activePools = JSON.parse(JSON.stringify(basePools));
+            drawnRoles = [];
+        }
+
+        function getRandomRole(category) {
+            let pool = activePools[category];
+            if (!pool || pool.length === 0) return { name: "Nessun ruolo", img: "" };
+            let idx = Math.floor(Math.random() * pool.length);
+            let roleName = pool.splice(idx, 1)[0]; 
+            return { name: roleName, img: imagesMap[roleName] || "" };
+        }
+
+        function drawCards(isReset) {
+            const qty = parseInt(document.getElementById("cardCount").value);
+            
+            if (isReset || drawnRoles.length === 0) {
+                initPools();
+            }
+
+            while (drawnRoles.length < qty) {
+                let currentIndex = drawnRoles.length;
+                if (currentIndex >= drawSequence.length) break; 
+                
+                let categoryKey = drawSequence[currentIndex];
+                let role = getRandomRole(categoryKey);
+                
+                drawnRoles.push({
+                    cardNumber: currentIndex + 1,
+                    categoryLabel: sequenceLabels[categoryKey],
+                    name: role.name,
+                    img: role.img
+                });
+            }
+
+            renderCards(qty);
+        }
+
+        function renderCards(qty) {
+            const container = document.getElementById("cardsContainer");
+            container.innerHTML = ""; 
+
+            for (let i = 0; i < qty; i++) {
+                if (i >= drawnRoles.length) break;
+                let role = drawnRoles[i];
+
+                let cardDiv = document.createElement("div");
+                cardDiv.className = "card";
+                
+                let imgTag = role.img ? `<img src="${role.img}" alt="${role.name}">` : `<div style="height:250px; display:flex; align-items:center;">Nessuna Immagine</div>`;
+                
+                cardDiv.innerHTML = `
+                    ${imgTag}
+                    <div class="card-title">${role.name}</div>
+                    <div class="card-category">Carta ${role.cardNumber} - ${role.categoryLabel}</div>
+                `;
+                container.appendChild(cardDiv);
+            }
+            
+            // Fa scorrere la pagina verso il basso per mostrare le nuove carte estratte
+            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        }
+
+        initPools();
+    </script>
+</body>
+</html>
