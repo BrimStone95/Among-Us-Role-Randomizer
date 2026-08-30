@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Among Us Role Randomizer</title>
+    <title>OBS Overlay - Randomizer Ruoli</title>
     <style>
-        /* Sfondo trasparente per OBS */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: transparent; 
@@ -16,15 +15,8 @@
             overflow-y: scroll; 
             scrollbar-width: none; 
         }
-        body::-webkit-scrollbar { 
-            display: none; 
-        }
-
-        h1 {
-            color: #ff4757;
-            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8);
-        }
-
+        body::-webkit-scrollbar { display: none; }
+        h1 { color: #ff4757; text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8); }
         .controls {
             margin-bottom: 30px;
             background-color: rgba(47, 53, 66, 0.85);
@@ -33,7 +25,6 @@
             display: inline-block;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
         }
-
         select, button {
             padding: 10px 15px;
             font-size: 16px;
@@ -43,30 +34,11 @@
             cursor: pointer;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
         }
-
-        select {
-            background-color: #ffffff;
-            color: #000000;
-        }
-
-        .btn-draw {
-            background-color: #2ed573;
-            color: white;
-            font-weight: bold;
-        }
-        .btn-draw:hover {
-            background-color: #27ae60;
-        }
-
-        .btn-reset {
-            background-color: #ff4757;
-            color: white;
-            font-weight: bold;
-        }
-        .btn-reset:hover {
-            background-color: #e84118;
-        }
-
+        select { background-color: #ffffff; color: #000000; }
+        .btn-draw { background-color: #2ed573; color: white; font-weight: bold; }
+        .btn-draw:hover { background-color: #27ae60; }
+        .btn-reset { background-color: #ff4757; color: white; font-weight: bold; }
+        .btn-reset:hover { background-color: #e84118; }
         .cards-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -75,7 +47,6 @@
             margin: 0 auto;
             padding-bottom: 50px;
         }
-
         .card {
             background-color: rgba(47, 53, 66, 0.95);
             padding: 25px;
@@ -87,12 +58,7 @@
             transition: transform 0.2s;
             border: 2px solid rgba(255, 255, 255, 0.1);
         }
-
-        .card:hover {
-            transform: scale(1.05);
-            border-color: rgba(255, 255, 255, 0.5);
-        }
-
+        .card:hover { transform: scale(1.05); border-color: rgba(255, 255, 255, 0.5); }
         .card img {
             max-width: 100%;
             height: auto;
@@ -102,21 +68,8 @@
             object-fit: contain;
             filter: drop-shadow(0px 4px 6px rgba(0,0,0,0.5));
         }
-
-        .card-title {
-            font-size: 24px;
-            font-weight: bold;
-            margin-bottom: 8px;
-            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
-        }
-
-        .card-category {
-            font-size: 15px;
-            color: #ced6e0;
-            background-color: rgba(0, 0, 0, 0.3);
-            padding: 4px 10px;
-            border-radius: 20px;
-        }
+        .card-title { font-size: 24px; font-weight: bold; margin-bottom: 8px; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8); }
+        .card-category { font-size: 15px; color: #ced6e0; background-color: rgba(0, 0, 0, 0.3); padding: 4px 10px; border-radius: 20px; }
     </style>
 </head>
 <body>
@@ -143,167 +96,176 @@
 
     <script>
         const imagesMap = {
+            "Abissale": "./img/Abissale.png",
             "Accalappiatore": "./img/Accalappiatore.png",
+            "Accecatore": "./img/Accecatore.png",
+            "Accumulatore": "./img/Accumulatore.png",
+            "Agitatore": "./img/Agitatore.png",
             "Alchimista": "./img/Alchimista.png",
             "Altruista": "./img/Altruista.png",
+            "Ammaliatore": "./img/Ammaliatore.png",
             "Amministratore": "./img/Amministratore.png",
+            "Amnesico": "./img/Amnesico.png",
             "Analista": "./img/Analista.png",
+            "Anonimo": "./img/Anonimo.png",
+            "Assessore": "./img/Assessore.png",
+            "Astrale": "./img/Astrale.png",
             "Astrologo": "./img/Astrologo.png",
+            "Augure": "./img/Augure.png",
+            "Avvocato": "./img/Avvocato.png",
+            "Avvoltoio": "./img/Avvoltoio.png",
+            "Banshee": "./img/Banshee.png",
             "Barbiere": "./img/Barbiere.png",
             "Bodyguard": "./img/Bodyguard.png",
+            "Bombarolo": "./img/Bombarolo.png",
+            "Borseggiatore": "./img/Borseggiatore.png",
+            "Bracconiere": "./img/Bracconiere.png",
+            "Burattinaio": "./img/Burattinaio.png",
+            "Buttafuori": "./img/Buttafuori.png",
+            "Cacciatore di taglie": "./img/Cacciatore Di Taglie.png",
             "Camaleonte": "./img/Camaleonte.png",
             "Cameraman": "./img/Cameraman.png",
+            "Camuffatore": "./img/Camuffatore.png",
             "Canalista": "./img/Canalista.png",
             "Candeliere": "./img/Candeliere.png",
             "Capitano": "./img/Capitano.png",
+            "Carnefice": "./img/Carnefice.png",
             "Cartomante": "./img/Cartomante.png",
+            "Cecchino": "./img/Cecchino.png",
+            "Celebratore": "./img/Celebratore.png",
             "Celebrità": "./img/Celebrità.png",
             "Chiacchierone": "./img/Chiacchierone.png",
+            "Collezionista di Anime": "./img/Collezionista di Anime.png",
             "Confessore": "./img/Confessore.png",
             "Controllore": "./img/Controllore.png",
+            "Corruttore": "./img/Corruttore.png",
             "Cospiratore": "./img/Cospiratore.png",
             "Crittografo": "./img/Crittografo.png",
             "Crociato": "./img/Crociato.png",
+            "Cronomante": "./img/Cronomante.png",
+            "Dea": "./img/Dea.png",
             "Demolitore": "./img/Demolitore.png",
+            "Dispersore": "./img/Dispersore.png",
             "Dittatore": "./img/Dittatore.png",
             "Dottore": "./img/Dottore.png",
             "Druido": "./img/Druido.png",
             "Enigmista": "./img/Enigmista.png",
+            "Esecutore": "./img/Esecutore.png",
+            "Esorcista": "./img/Esorcista.png",
+            "Evasore": "./img/Evasore.png",
+            "Evocatore": "./img/Evocatore.png",
+            "Fabbricatore": "./img/Fabbricatore.png",
+            "Forgiatore": "./img/Forgiatore.png",
             "Fuggitivo": "./img/Fuggitivo.png",
+            "Fuochista": "./img/Fuochista.png",
             "Giardiniere": "./img/Giardiniere.png",
             "Giornalista": "./img/Giornalista.png",
             "Giudice": "./img/Giudice.png",
+            "Giullare": "./img/Giullare.png",
             "Granatiere": "./img/Granatiere.png",
             "Guardiano Notturno": "./img/Guardiano Notturno.png",
-            "Inquirente": "./img/Inquirente.png",
-            "Inquisitore": "./img/Inquisitore.png",
-            "Ispettore": "./img/Ispettore.png",
-            "Maestro del tempo": "./img/Maestro del tempo.png",
-            "Matematico": "./img/Matematico.png",
-            "Medico": "./img/Medico.png",
-            "Menestrello": "./img/Menestrello.png",
-            "Miracolato": "./img/Miracolato.png",
-            "Moderatore": "./img/Moderatore.png",
-            "Non-Morto": "./img/Non-Morto.png",
-            "Onnisciente": "./img/Onnisciente.png",
-            "Oracolo": "./img/Oracolo.png",
-            "Pacifista": "./img/Pacifista.png",
-            "Patologo": "./img/Patologo.png",
-            "Portalista": "./img/Portalista.png",
-            "Premonitore": "./img/Premonitore.png",
-            "Prestigiatore": "./img/Prestigiatore.png",
-            "Protettore": "./img/Protettore.png",
-            "Psichico": "./img/Psichico.png",
-            "Retribuzionista": "./img/Retribuzionista.png",
-            "Riparatore": "./img/Riparatore.png",
-            "Scambiatore": "./img/Scambiatore.png",
-            "Sceriffo": "./img/Sceriffo.png",
-            "Sentinella": "./img/Sentinella.png",
-            "Sindaco": "./img/Sindaco.png",
-            "Spia": "./img/Spia.png",
-            "Telecomunicatore": "./img/Telecomunicatore.png",
-            "Testimone": "./img/Testimone.png",
-            "Vedetta": "./img/Vedetta.png",
-            "Veggente": "./img/Veggente.png",
-            "Veterano": "./img/Veterano.png",
-            "Astrale": "./img/Astrale.png",
-            
-            "Abissale": "./img/Abissale.png",
-            "Accecatore": "./img/Accecatore.png",
-            "Anonimo": "./img/Anonimo.png",
-            "Assessore": "./img/Assessore.png",
-            "Bombarolo": "./img/Bombarolo.png",
-            "Burattinaio": "./img/Burattinaio.png",
-            "Cacciatore di taglie": "./img/Cacciatore Di Taglie.png",
-            "Camuffatore": "./img/Camuffatore.png",
-            "Carnefice": "./img/Carnefice.png",
-            "Cronomante": "./img/Cronomante.png",
-            "Dispersore": "./img/Dispersore.png",
-            "Esorcista": "./img/Esorcista.png",
-            "Evasore": "./img/Evasore.png",
-            "Fabbricatore": "./img/Fabbricatore.png",
-            "Forgiatore": "./img/Forgiatore.png",
+            "Incantatore": "./img/Incantatore.png",
+            "Incursore": "./img/Incursore.png",
             "Indovino Malvagio": "./img/Indovino Malvagio.png",
             "Influencer": "./img/Influencer.png",
             "Ingannatore": "./img/Ingannatore.png",
+            "Inibitore": "./img/Inibitore.png",
+            "Infiltrato": "./img/Infiltrato.png",
+            "Innocente": "./img/Innocente.png",
+            "Inquirente": "./img/Inquirente.png",
+            "Inquisitore": "./img/Inquisitore.png",
             "Intercettatore": "./img/Intercettatore.png",
             "Inversore": "./img/Inversore.png",
+            "Invocatore di spiriti": "./img/Invocatore Di Spiriti.png",
             "Ipnotista": "./img/Ipnotista.png",
+            "Ispettore": "./img/Ispettore.png",
             "Istigatore": "./img/Istigatore.png",
             "Ladro del Tempo": "./img/Ladro Del Tempo.png",
             "Limitatore": "./img/Limitatore.png",
             "Ludopatico": "./img/Ludopatico.png",
+            "Lupo Mannaro": "./img/Lupo Mannaro.png",
             "Macchina Assassina": "./img/Macchina Assassina.png",
             "Macellaio": "./img/Macellaio.png",
+            "Maestro del tempo": "./img/Maestro del tempo.png",
+            "Maestro delle armi": "./img/Maestro Delle Armi.png",
+            "Maestro Voodoo": "./img/Maestro Voodoo.png",
             "Mafioso": "./img/Mafioso.png",
+            "Mago": "./img/Mago.png",
+            "Matematico": "./img/Matematico.png",
+            "Medico": "./img/Medico.png",
+            "Menestrello": "./img/Menestrello.png",
+            "Mietitore": "./img/Mietitore.png",
+            "Miracolato": "./img/Miracolato.png",
+            "Moderatore": "./img/Moderatore.png",
+            "Necrologo": "./img/Necrologo.png",
             "Ninja": "./img/Ninja.png",
+            "Non-Morto": "./img/Non-Morto.png",
+            "Occultista": "./img/Occultista.png",
+            "Ombra": "./img/Ombra.png",
+            "Onnisciente": "./img/Onnisciente.png",
+            "Oracolo": "./img/Oracolo.png",
             "Ostruzionista": "./img/Ostruzionista.png",
+            "Pacifista": "./img/Pacifista.png",
+            "Patologo": "./img/Patologo.png",
+            "Pellicano": "./img/Pellicano.png",
+            "Persuasore": "./img/Persuasore.png",
             "Pietrificatore": "./img/Pietrificatore.png",
+            "Piromane": "./img/Piromane.png",
+            "Portalista": "./img/Portalista.png",
+            "Possessore": "./img/Possessore.png",
             "Posticipatore": "./img/Posticipatore.png",
+            "Postino": "./img/Postino.png",
+            "Pozionista": "./img/Pozionista.png",
+            "Premonitore": "./img/Premonitore.png",
+            "Prestigiatore": "./img/Prestigiatore.png",
+            "Profeta": "./img/Profeta.png",
+            "Protettore": "./img/Protettore.png",
+            "Psichico": "./img/Psichico.png",
             "Pulitore": "./img/Pulitore.png",
+            "Retribuzionista": "./img/Retribuzionista.png",
             "Revocatore": "./img/Revocatore.png",
             "Ricattatore": "./img/Ricattatore.png",
+            "Riparatore": "./img/Riparatore.png",
+            "Ritualista": "./img/Ritualista.png",
             "Rivendicatore": "./img/Rivendicatore.png",
             "Sacrificatore": "./img/Sacrificatore.png",
+            "Scambiatore": "./img/Scambiatore.png",
             "Scambista": "./img/Scambista.png",
+            "Sceriffo": "./img/Sceriffo.png",
             "Segugio Malvagio": "./img/Segugio Malvagio.png",
+            "Sentinella": "./img/Sentinella.png",
+            "Serial Killer": "./img/Serial Killer.png",
+            "Sindaco": "./img/Sindaco.png",
+            "Sirena": "./img/Sirena.png",
+            "Sorvegliante": "./img/Sorvegliante.png",
             "Spaventatore": "./img/Spaventatore.png",
+            "Spia": "./img/Spia.png",
+            "Spirito": "./img/Spirito.png",
             "Strega": "./img/Strega.png",
+            "Swooper": "./img/Swooper.png",
+            "Telecomunicatore": "./img/Telecomunicatore.png",
+            "Tessitore di Sogni": "./img/Tessitore di Sogni.png",
+            "Testimone": "./img/Testimone.png",
+            "Tiranno": "./img/Tiranno.png",
             "Tiratore Rapido": "./img/Tiratore Rapido.png",
             "Trappolatore": "./img/Trappolatore.png",
+            "Trasformatore": "./img/Trasformatore.png",
+            "Trasportatore": "./img/Trasportatore.png",
+            "Untore": "./img/Untore.png",
             "Vampiro": "./img/Vampiro.png",
+            "Vedetta": "./img/Vedetta.png",
+            "Veggente": "./img/Veggente.png",
             "Veggente Malvagio": "./img/Veggente Malvagio.png",
             "Ventriloquo": "./img/Ventriloquo.png",
-            "Swooper": "./img/Swooper.png",
-
-            "Amnesico": "./img/Amnesico.png",
-            "Avvocato": "./img/Avvocato.png",
-            "Necrologo": "./img/Necrologo.png",
-            "Postino": "./img/Postino.png",
-            "Avvoltoio": "./img/Avvoltoio.png",
-            "Esecutore": "./img/Esecutore.png",
-            "Giullare": "./img/Giullare.png",
-            "Innocente": "./img/Innocente.png",
-            "Profeta": "./img/Profeta.png",
-
-            "Accumulatore": "./img/Accumulatore.png",
-            "Agitatore": "./img/Agitatore.png",
-            "Borseggiatore": "./img/Borseggiatore.png",
-            "Collezionista di Anime": "./img/Collezionista di Anime.png",
-            "Corruttore": "./img/Corruttore.png",
-            "Ammaliatore": "./img/Ammaliatore.png",
-            "Invocatore di spiriti": "./img/Invocatore Di Spiriti.png",
-            "Lupo Mannaro": "./img/Lupo Mannaro.png",
-            "Mago": "./img/Mago.png",
-            "Occultista": "./img/Occultista.png",
-            "Pellicano": "./img/Pellicano.png",
-            "Ritualista": "./img/Ritualista.png",
-            "Serial Killer": "./img/Serial Killer.png",
-            "Persuasore": "./img/Persuasore.png",
-            "Spirito": "./img/Spirito.png",
-            "Untore": "./img/Untore.png",
-            "Maestro delle armi": "./img/Maestro Delle Armi.png",
-
-            "Augure": "./img/Augure.png",
-            "Banshee": "./img/Banshee.png",
-            "Bracconiere": "./img/Bracconiere.png",
-            "Dea": "./img/Dea.png",
-            "Evocatore": "./img/Evocatore.png",
-            "Incantatore": "./img/Incantatore.png",
-            "Maestro Voodoo": "./img/Maestro Voodoo.png",
-            "Mietitore": "./img/Mietitore.png",
-            "Ombra": "./img/Ombra.png",
-            "Pozionista": "./img/Pozionista.png",
-            "Sirena": "./img/Sirena.png",
-            "Tessitore di Sogni": "./img/Tessitore di Sogni.png"
+            "Veterano": "./img/Veterano.png"
         };
 
         const basePools = {
             "astronauti_controllo": ["Accalappiatore", "Amministratore", "Analista", "Camaleonte", "Candeliere", "Capitano", "Cartomante", "Controllore", "Cospiratore", "Crittografo", "Dottore", "Druido", "Enigmista", "Inquirente", "Inquisitore", "Ispettore", "Patologo", "Premonitore", "Psichico", "Spia", "Telecomunicatore", "Testimone", "Vedetta", "Veggente", "Moderatore", "Onnisciente", "Oracolo", "Non-Morto"],
             "astronauti_protezione": ["Medico", "Altruista", "Bodyguard", "Crociato", "Protettore", "Giardiniere", "Confessore", "Pacifista", "Matematico"],
-            "astronauti_vari": ["Cameraman", "Sindaco", "Barbiere", "Celebrità", "Demolitore", "Fuggitivo", "Giornalista", "Guardiano Notturno", "Portalista", "Canalista", "Alchimista", "Dittatore", "Miracolato", "Chiacchierone", "Granatiere", "Maestro del tempo", "Menestrello", "Prestigiatore", "Riparatore", "Astrale", "Scambiatore"],
+            "astronauti_vari": ["Cameraman", "Sindaco", "Barbiere", "Celebrità", "Demolitore", "Fuggitivo", "Giornalista", "Guardiano Notturno", "Portalista", "Canalista", "Alchimista", "Dittatore", "Miracolato", "Chiacchierone", "Granatiere", "Maestro del tempo", "Menestrello", "Prestigiatore", "Riparatore", "Astrale", "Scambiatore", "Infiltrato", "Buttafuori"],
             "neutrali_passivi": ["Amnesico", "Avvocato", "Necrologo", "Postino", "Avvoltoio", "Esecutore", "Giullare", "Innocente", "Profeta"],
-            "impostori": ["Abissale", "Assessore", "Bombarolo", "Cacciatore di taglie", "Carnefice", "Cronomante", "Mafioso", "Indovino Malvagio", "Macchina Assassina", "Ninja", "Sacrificatore", "Strega", "Tiratore Rapido", "Trappolatore", "Influencer", "Camuffatore", "Pulitore", "Inversore", "Ipnotista", "Istigatore", "Ladro del Tempo", "Limitatore", "Pietrificatore", "Revocatore", "Ricattatore", "Rivendicatore", "Scambista", "Dispersore", "Ventriloquo", "Accecatore", "Anonimo", "Burattinaio", "Evasore", "Fabbricatore", "Forgiatore", "Ingannatore", "Posticipatore", "Swooper", "Vampiro", "Veggente Malvagio", "Esorcista", "Ludopatico", "Intercettatore", "Ostruzionista", "Segugio Malvagio", "Spaventatore", "Macellaio"],
+            "impostori": ["Abissale", "Assessore", "Bombarolo", "Cacciatore di taglie", "Carnefice", "Cronomante", "Mafioso", "Indovino Malvagio", "Macchina Assassina", "Ninja", "Sacrificatore", "Strega", "Tiratore Rapido", "Trappolatore", "Influencer", "Camuffatore", "Pulitore", "Inversore", "Ipnotista", "Istigatore", "Ladro del Tempo", "Limitatore", "Pietrificatore", "Revocatore", "Ricattatore", "Rivendicatore", "Scambista", "Dispersore", "Ventriloquo", "Accecatore", "Anonimo", "Burattinaio", "Evasore", "Fabbricatore", "Forgiatore", "Ingannatore", "Posticipatore", "Swooper", "Vampiro", "Veggente Malvagio", "Esorcista", "Ludopatico", "Intercettatore", "Ostruzionista", "Segugio Malvagio", "Spaventatore", "Macellaio", "Tiranno", "Trasformista", "Sorvegliante", "Possessore"],
             "astronauti_uccisore": ["Astrologo", "Giudice", "Retribuzionista", "Sceriffo", "Sentinella", "Veterano"],
             "neutrali_assassini": ["Accumulatore", "Agitatore", "Borseggiatore", "Collezionista di Anime", "Corruttore", "Ammaliatore", "Invocatore di spiriti", "Lupo Mannaro", "Mago", "Occultista", "Pellicano", "Ritualista", "Serial Killer", "Persuasore", "Spirito", "Untore", "Maestro delle armi"],
             "congrega": ["Augure", "Banshee", "Bracconiere", "Dea", "Evocatore", "Incantatore", "Maestro Voodoo", "Mietitore", "Ombra", "Pozionista", "Sirena", "Tessitore di Sogni"]
