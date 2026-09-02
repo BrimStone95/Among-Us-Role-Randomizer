@@ -56,8 +56,6 @@
         }
 
         .nav-btn {
-            background-color: #576574;
-            color: #fff;
             font-family: 'Fredoka', sans-serif;
             font-weight: 700;
             font-size: 16px;
@@ -67,18 +65,33 @@
             padding: 10px 18px;
             box-shadow: 0 4px 0 #000;
             cursor: pointer;
-            transition: transform 0.1s, box-shadow 0.1s;
+            transition: transform 0.1s, box-shadow 0.1s, filter 0.1s;
         }
         .nav-btn:hover {
-            filter: brightness(1.1);
+            filter: brightness(1.15);
         }
-        .nav-btn:active {
+        .nav-btn:active, .nav-btn.active {
             transform: translateY(4px);
             box-shadow: 0 0 0 #000;
+            border-color: #fff;
         }
-        .nav-btn.active {
-            background-color: #1dd1a1;
-            color: #000;
+
+        /* Colori specifici Fazioni */
+        .btn-estrazione { background-color: #576574; color: #fff; }
+        .btn-impostori { background-color: #d63031; color: #fff; }
+        .btn-astronauti { background-color: #0984e3; color: #fff; }
+        .btn-neutrali-passivi { background-color: #fdcb6e; color: #000; }
+        .btn-neutrali-assassini { background-color: #e17055; color: #fff; }
+        .btn-congrega { background-color: #6c5ce7; color: #fff; }
+
+        /* Tasto Modalità OBS */
+        .btn-obs { background-color: #2f3640; color: #f5f6fa; border-color: #fbc531; margin-left: 20px; }
+        .btn-obs.active-obs { background-color: #fbc531; color: #2f3640; border-color: #fff; }
+
+        /* Modalità OBS (Sfondo Trasparente) */
+        body.obs-mode {
+            background-image: none !important;
+            background-color: transparent !important;
         }
 
         /* Controlli Estrazione */
@@ -195,15 +208,13 @@
 
     <!-- Menu Fazioni -->
     <div class="top-nav">
-        <button class="nav-btn active" onclick="switchTab('randomizer', this)">🎲 Estrazione</button>
-        <button class="nav-btn" onclick="switchTab('impostori', this)">Impostori</button>
-        <button class="nav-btn" onclick="switchTab('astronauti_controllo', this)">A. Controllo</button>
-        <button class="nav-btn" onclick="switchTab('astronauti_protezione', this)">A. Protezione</button>
-        <button class="nav-btn" onclick="switchTab('astronauti_uccisore', this)">A. Uccisori</button>
-        <button class="nav-btn" onclick="switchTab('astronauti_vari', this)">A. Vari</button>
-        <button class="nav-btn" onclick="switchTab('neutrali_passivi', this)">Neutrali Passivi</button>
-        <button class="nav-btn" onclick="switchTab('neutrali_assassini', this)">Neutrali Assassini</button>
-        <button class="nav-btn" onclick="switchTab('congrega', this)">Congrega</button>
+        <button class="nav-btn btn-estrazione active" onclick="switchTab('randomizer', this)">🎲 Estrazione</button>
+        <button class="nav-btn btn-impostori" onclick="switchTab('impostori', this)">Impostori</button>
+        <button class="nav-btn btn-astronauti" onclick="switchTab('astronauti_tutti', this)">Astronauti</button>
+        <button class="nav-btn btn-neutrali-passivi" onclick="switchTab('neutrali_passivi', this)">Neutrali Passivi</button>
+        <button class="nav-btn btn-neutrali-assassini" onclick="switchTab('neutrali_assassini', this)">Neutrali Assassini</button>
+        <button class="nav-btn btn-congrega" onclick="switchTab('congrega', this)">Congrega</button>
+        <button class="nav-btn btn-obs" id="obsToggleBtn" onclick="toggleOBSMode()">🎥 Modalità OBS: OFF</button>
     </div>
     
     <!-- Sezione Randomizer -->
@@ -685,12 +696,30 @@
         function renderFaction(categoryId) {
             const container = document.getElementById("factionCardsContainer");
             container.innerHTML = "";
-            const roles = basePools[categoryId] || [];
+            
+            let rolesToRender = [];
+            
+            if (categoryId === 'astronauti_tutti') {
+                const astroCategories = ['astronauti_controllo', 'astronauti_protezione', 'astronauti_uccisore', 'astronauti_vari'];
+                astroCategories.forEach(cat => {
+                    if(basePools[cat]) {
+                        basePools[cat].forEach(role => {
+                            rolesToRender.push({ name: role, catLabel: sequenceLabels[cat] });
+                        });
+                    }
+                });
+            } else {
+                const roles = basePools[categoryId] || [];
+                roles.forEach(role => {
+                    rolesToRender.push({ name: role, catLabel: sequenceLabels[categoryId] });
+                });
+            }
             
             // Ordina alfabeticamente per facilitare la ricerca
-            const sortedRoles = [...roles].sort((a, b) => a.localeCompare(b));
+            rolesToRender.sort((a, b) => a.name.localeCompare(b.name));
 
-            sortedRoles.forEach(roleName => {
+            rolesToRender.forEach(roleObj => {
+                let roleName = roleObj.name;
                 let cardDiv = document.createElement("div");
                 cardDiv.className = "card";
                 
@@ -701,12 +730,28 @@
                 cardDiv.innerHTML = `
                     ${imgTag}
                     <div class="card-title">${roleName}</div>
-                    <div class="card-category">${sequenceLabels[categoryId]}</div>
+                    <div class="card-category">${roleObj.catLabel}</div>
                     <div class="card-description">${descText}</div>
                 `;
                 container.appendChild(cardDiv);
             });
             window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Funzione per la Modalità OBS
+        function toggleOBSMode() {
+            const body = document.body;
+            const btn = document.getElementById('obsToggleBtn');
+            
+            body.classList.toggle('obs-mode');
+            
+            if (body.classList.contains('obs-mode')) {
+                btn.innerHTML = '🎥 Modalità OBS: ON';
+                btn.classList.add('active-obs');
+            } else {
+                btn.innerHTML = '🎥 Modalità OBS: OFF';
+                btn.classList.remove('active-obs');
+            }
         }
 
         initPools();
