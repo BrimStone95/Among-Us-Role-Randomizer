@@ -503,7 +503,7 @@
             "Matematico": "In qualità di Matematico, sei un astronauta con la capacità di porre un quesito matematico tramite un comando in chat (/cmd chiedi [numero] [numero]). Il primo giocatore a rispondere correttamente riceverà un utilizzo dell'abilità extra e uno scudo per il round successivo.",
             "Medico": "In qualità di Medico, sei un astronauta con la capacità di applicare uno scudo a un giocatore (tasto PET). Lo scudo protegge il bersaglio e viene rimosso se qualcuno tenta di ucciderlo o se muori. Inoltre, puoi anche vedere quando qualcuno rompe lo scudo attraverso un flash luminoso.",
             "Menestrello": "In qualità di Menestrello, sei un astronauta con la capacità di iniziare a cantare (tasto PET). Durante questo periodo, nessuno può usare i condotti o trasformarsi perché distratto dalla tua canzone.",
-            "Mietitore": "In qualità di Mietitore, sei un membro della congrega con la capacità di maledire un giocatore; quando un giocatore maledetto muore, guadagni un'anima. Al raggiungimento di un numero specifico di anime (impostato dall'host) (o se sei l'ultimo assassino vivo), diventi MORTE. Non puoi usare il Necronomicon per potenziare i tuoi poteri.",
+            "Mietitore": "In qualità di Mietitore, sei un membro della congrega con la capacità di maledire un giocatore; quando un giocatore maledetto muore, guadagni un'anima. Al raggiungimento di un numero specifico di anime (impostato dall'host) (o sei l'ultimo assassino vivo), diventi MORTE. Non puoi usare il Necronomicon per potenziare i tuoi poteri.",
             "Miracolato": "In qualità di Miracolato, sei un astronauta con la capacità di schivare un tentativo di uccisione con una probabilità impostata dall'host. L'assassino vedrà l'animazione di uno scudo, ma rimarrai inconsapevole del pericolo scampato.",
             "Moderatore": "In qualità di Moderatore, sei un astronauta con la capacità di conoscere i ruoli dei giocatori indovinati e sapere se qualcuno sbaglia a indovinare. Vedi anche se vengono usati altri comandi riunione che altrimenti rimarrebbero nascosti.",
             "Necrologo": "In qualità di Necrologo, sei un neutrale con la capacità di indovinare i ruoli dei giocatori morti utilizzando un apposito comando in chat. Devi indovinare un certo numero di ruoli per poter vincere insieme alla squadra vincitrice alla fine della partita. Per indovinare, i client moddati vedranno un mirino accanto ai giocatori. I client normali dovranno digitare in chat /cmd bt id ruolo, dove l'id è il numerino che appare accanto ai nomi giocatore seguito dal ruolo che vogliono indovinare tra quelli scelti dall'host.",
@@ -538,7 +538,7 @@
             "Ritualista": "In qualità di Ritualista, sei un neutrale con la capacità di svelare i ruoli degli altri giocatori o di ucciderli a seconda del numero di clic. Con un singolo clic riveli il ruolo del bersaglio, mentre con un doppio clic lo uccidi; tuttavia, una volta esauriti gli usi per rivelare, il tasto potrà essere usato solo per attacchi normali. (tasto UCCIDI)",
             "Rivendicatore": "In qualità di Rivendicatore, sei un impostore con la capacità di avere voti aggiuntivi durante il meeting.",
             "Sacrificatore": "In qualità di Sacrificatore, sei un impostore con la capacità di marchiare massimo due giocatori cliccando una volta il tasto UCCIDI su di loro. I giocatori marchiati moriranno nel momento in cui morirai anche tu. Cliccando due volte il tasto UCCIDI si eseguirà una normale uccisione.",
-            "Scambiatore": "In qualità di Scambiatore, sei un astronauta con la capacità di scambiare i voti ricevuti da due giocatori. Ai client moddati saranno mostrate delle frecce accanto ai nomi dei giocatori, mentre quelli non moddati dovranno digitare in chat il comando /cmd sw id due volte.",
+            "Scambiatore": "In qualità di Scambiatore, sei un astronauta con la capacità di scambiare i voti ricevuti da due giocatori. Ai client moddati saranno mostrate delle frecce accanto ai nomi dei giocatori, quelli non moddati dovranno digitare in chat il comando /cmd sw id due volte.",
             "Scambista": "In qualità di Scambista, sei un impostore con la capacità di far scambiare di posto 2 giocatori attraverso il tuo tasto MUTAFORMA.",
             "Sceriffo": "In qualità di Sceriffo, sei un astronauta con la capacità di uccidere Impostori (tranne l'Ingannatore), Neutrali e Congrega (tasto PET). Se provi a uccidere un altro Astronauta, morirai tu stesso al suo posto.",
             "Segugio Malvagio": "In qualità di Segugio Malvagio, sei un impostore con la capacità di poter tracciare i movimenti degli altri giocatori, selezionandoli dal tuo menù MUTAFORMA. Una volta selezionato il giocatore, sotto al suo nome apparirà una freccia che ne indicherà i movimenti. Inoltre ricevi un avviso luminoso ogni volta che un altro impostore effettua un'uccisione e vedi l'ultima stanza in cui è stato il giocatore selezionato durante il meeting.",
@@ -647,10 +647,10 @@
                 });
             }
 
-            renderRandomizerCards(qty);
+            renderRandomizerCards(qty, isReset);
         }
 
-        function renderRandomizerCards(qty) {
+        function renderRandomizerCards(qty, isReset = false) {
             const container = document.getElementById("randomCardsContainer");
             container.innerHTML = ""; 
 
@@ -672,8 +672,6 @@
                 `;
                 container.appendChild(cardDiv);
             }
-            
-            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
         }
 
         // Funzione per il cambio di sezione dal menu
