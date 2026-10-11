@@ -67,10 +67,10 @@
             cursor: pointer;
             transition: transform 0.1s, box-shadow 0.1s, filter 0.1s;
         }
-        .nav-btn:hover {
+        .nav-btn:hover:not(:disabled) {
             filter: brightness(1.15);
         }
-        .nav-btn:active, .nav-btn.active {
+        .nav-btn:active:not(:disabled), .nav-btn.active {
             transform: translateY(4px);
             box-shadow: 0 0 0 #000;
             border-color: #fff;
@@ -87,12 +87,6 @@
         /* Tasto Modalità OBS */
         .btn-obs { background-color: #2f3640; color: #f5f6fa; border-color: #fbc531; margin-left: 20px; }
         .btn-obs.active-obs { background-color: #fbc531; color: #2f3640; border-color: #fff; }
-
-        /* Modalità OBS (Sfondo Trasparente) */
-        body.obs-mode {
-            background-image: none !important;
-            background-color: transparent !important;
-        }
 
         /* Controlli Estrazione */
         .controls {
@@ -121,14 +115,64 @@
             transition: transform 0.1s, box-shadow 0.1s;
         }
         select { background-color: #ffffff; color: #000000; outline: none; }
-        .action-btn:active {
+        
+        .action-btn:active:not(:disabled) {
             transform: translateY(4px);
             box-shadow: 0 0 0 #000;
         }
+        
+        /* Bottoni disabilitati durante il caricamento */
+        .action-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: translateY(4px);
+            box-shadow: 0 0 0 #000;
+        }
+        
         .btn-draw { background-color: #2ed573; color: #000; }
-        .btn-draw:hover { background-color: #27ae60; }
+        .btn-draw:hover:not(:disabled) { background-color: #27ae60; }
         .btn-reset { background-color: #ff4757; color: #fff; }
-        .btn-reset:hover { background-color: #e84118; }
+        .btn-reset:hover:not(:disabled) { background-color: #e84118; }
+
+        /* Schermata di Caricamento (Spinner) */
+        #loading-container {
+            display: none; /* Nascosto di default */
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 60px 0;
+        }
+
+        .spinner {
+            width: 80px;
+            height: 80px;
+            border: 10px solid rgba(255, 255, 255, 0.2);
+            border-top: 10px solid #fbc531;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+            box-shadow: 0 0 15px rgba(251, 197, 49, 0.5);
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            font-size: 24px;
+            font-weight: 700;
+            color: #fbc531;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            animation: pulse 1.5s infinite;
+            text-shadow: 2px 2px 0 #000;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
 
         /* Griglia Carte */
         .cards-grid {
@@ -143,14 +187,21 @@
             background-color: rgba(47, 53, 66, 0.95);
             padding: 25px;
             border-radius: 16px;
-            box-shadow: 8px 8px 0px rgba(0, 0, 0, 1); /* Ombra dura stile fumetto */
+            box-shadow: 8px 8px 0px rgba(0, 0, 0, 1);
             display: flex;
             flex-direction: column;
             align-items: center;
             transition: transform 0.2s;
             border: 4px solid #000;
+            animation: popIn 0.4s ease-out; /* Animazione entrata carte */
         }
         .card:hover { transform: scale(1.03) translateY(-5px); }
+        
+        @keyframes popIn {
+            0% { opacity: 0; transform: scale(0.8); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
         .card img {
             max-width: 100%;
             height: auto;
@@ -232,14 +283,30 @@
             justify-content: center;
             align-items: center;
         }
-        .modal-content {
+
+        .modal-images-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
             max-width: 90%;
             max-height: 90%;
+            overflow-y: auto;
+            align-items: center;
+            padding: 20px;
+        }
+        .modal-images-container::-webkit-scrollbar { display: none; }
+        .modal-images-container { scrollbar-width: none; }
+
+        .modal-content {
+            max-width: 100%;
+            height: auto;
             border: 4px solid #000;
             border-radius: 12px;
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
             object-fit: contain;
+            flex-shrink: 0; 
         }
+
         .close-modal {
             position: absolute;
             top: 20px;
@@ -288,9 +355,16 @@
                 <option value="14">14</option>
                 <option value="15">15</option>
             </select>
-            <button class="action-btn btn-draw" onclick="drawCards(false)">Estrai / Aggiungi</button>
-            <button class="action-btn btn-reset" onclick="drawCards(true)">Resetta Tutto</button>
+            <button class="action-btn btn-draw" id="btn-draw-id" onclick="drawCards(false)">Estrai / Aggiungi</button>
+            <button class="action-btn btn-reset" id="btn-reset-id" onclick="drawCards(true)">Resetta Tutto</button>
         </div>
+        
+        <!-- Animazione Caricamento -->
+        <div id="loading-container">
+            <div class="spinner"></div>
+            <div class="loading-text">Estrazione in corso...</div>
+        </div>
+
         <div class="cards-grid" id="randomCardsContainer"></div>
     </div>
 
@@ -302,7 +376,7 @@
     <!-- Modal per le impostazioni -->
     <div id="settingsModal" class="modal" onclick="closeModal(event)">
         <span class="close-modal">&times;</span>
-        <img class="modal-content" id="settingsImg" alt="Impostazioni Ruolo">
+        <div id="settingsImgContainer" class="modal-images-container"></div>
     </div>
 
     <script>
@@ -673,6 +747,19 @@
             "congrega"
         ];
 
+        // Mappa per i ruoli con immagini multiple
+        const specialSettingsMap = {
+            "Burattinaio": [
+                "./img/Burattinaio 1 impostazioni.jpg", 
+                "./img/Burattinaio 2 impostazioni.jpg"
+            ],
+            "Ludopatico": [
+                "./img/Ludopatico 1 impostazioni.jpg", 
+                "./img/Ludopatico 2 impostazioni.jpg", 
+                "./img/Ludopatico 3 impostazioni.jpg"
+            ]
+        };
+
         let activePools = {};
         let drawnRoles = [];
 
@@ -691,6 +778,10 @@
 
         function drawCards(isReset) {
             const qty = parseInt(document.getElementById("cardCount").value);
+            const container = document.getElementById("randomCardsContainer");
+            const loader = document.getElementById("loading-container");
+            const btnDraw = document.getElementById("btn-draw-id");
+            const btnReset = document.getElementById("btn-reset-id");
             
             if (isReset || drawnRoles.length === 0) {
                 initPools();
@@ -711,7 +802,22 @@
                 });
             }
 
-            renderRandomizerCards(qty, isReset);
+            // Svuoto il container e mostro il loader
+            container.innerHTML = "";
+            loader.style.display = "flex";
+            
+            // Disabilito i bottoni per evitare spam
+            btnDraw.disabled = true;
+            btnReset.disabled = true;
+            
+            // Simulo il tempo di caricamento (1.5 secondi)
+            setTimeout(() => {
+                loader.style.display = "none";
+                btnDraw.disabled = false;
+                btnReset.disabled = false;
+                
+                renderRandomizerCards(qty, isReset);
+            }, 1500);
         }
 
         function renderRandomizerCards(qty, isReset = false) {
@@ -741,7 +847,6 @@
 
         // Funzione per il cambio di sezione dal menu
         function switchTab(tabId, btnElement) {
-            // Aggiorna lo stile dei pulsanti
             document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
             if(btnElement) btnElement.classList.add('active');
 
@@ -778,7 +883,6 @@
                 });
             }
             
-            // Ordina alfabeticamente per facilitare la ricerca
             rolesToRender.sort((a, b) => a.name.localeCompare(b.name));
 
             rolesToRender.forEach(roleObj => {
@@ -805,21 +909,32 @@
         // Funzioni per aprire e chiudere il popup delle impostazioni
         function openSettingsModal(roleName) {
             const modal = document.getElementById("settingsModal");
-            const modalImg = document.getElementById("settingsImg");
+            const container = document.getElementById("settingsImgContainer");
             
-            // Imposta il percorso dell'immagine dinamicamente
-            modalImg.src = `./img/${roleName} impostazioni.jpg`;
+            container.innerHTML = ""; 
             
-            // Mostra il modale come flexbox per centrare il contenuto
+            let imagesToLoad = specialSettingsMap[roleName] 
+                ? specialSettingsMap[roleName] 
+                : [`./img/${roleName} impostazioni.jpg`];
+            
+            imagesToLoad.forEach(src => {
+                let img = document.createElement("img");
+                img.src = src;
+                img.className = "modal-content";
+                img.alt = `Impostazioni ${roleName}`;
+                container.appendChild(img);
+            });
+            
             modal.style.display = "flex";
         }
 
         function closeModal(event) {
             const modal = document.getElementById("settingsModal");
-            // Chiudi il modale se si clicca sullo sfondo scuro o sulla X
+            const container = document.getElementById("settingsImgContainer");
+            
             if (event.target === modal || event.target.classList.contains("close-modal")) {
                 modal.style.display = "none";
-                document.getElementById("settingsImg").src = ""; // Pulisce l'immagine
+                container.innerHTML = ""; 
             }
         }
 
