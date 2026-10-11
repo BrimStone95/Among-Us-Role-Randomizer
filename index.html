@@ -884,6 +884,7 @@
                 
                 let imgTag = role.img ? `<img src="${role.img}" alt="${role.name}">` : `<div style="height:250px; display:flex; align-items:center;">Nessuna Immagine</div>`;
                 let descText = descriptionsMap[role.name] || "Descrizione non ancora aggiunta per questo ruolo.";
+                let settingsCount = specialSettingsMap[role.name] ? specialSettingsMap[role.name].length : 1;
                 
                 cardDiv.innerHTML = `
                     ${imgTag}
@@ -891,7 +892,7 @@
                     <div class="card-category">Carta ${role.cardNumber} - ${role.categoryLabel}</div>
                     <div class="card-description">${descText}</div>
                     <div class="card-buttons">
-                        <button class="btn-settings" onclick="openSettingsModal('${role.name}')">⚙️ Impostazioni</button>
+                        <button class="btn-settings" onclick="openSettingsModal('${role.name}')">⚙️ Impostazioni (${settingsCount})</button>
                         <button class="btn-reroll" onclick="rerollCard(${i})">🔄 Cambia</button>
                     </div>
                 `;
@@ -945,13 +946,14 @@
                 let imgPath = imagesMap[roleName] || "";
                 let imgTag = imgPath ? `<img src="${imgPath}" alt="${roleName}">` : `<div style="height:250px; display:flex; align-items:center; justify-content:center;">Nessuna Immagine</div>`;
                 let descText = descriptionsMap[roleName] || "Descrizione non ancora aggiunta per questo ruolo.";
+                let settingsCount = specialSettingsMap[roleName] ? specialSettingsMap[roleName].length : 1;
                 
                 cardDiv.innerHTML = `
                     ${imgTag}
                     <div class="card-title">${roleName}</div>
                     <div class="card-category">${roleObj.catLabel}</div>
                     <div class="card-description">${descText}</div>
-                    <button class="btn-settings" style="margin-top: 15px;" onclick="openSettingsModal('${roleName}')">⚙️ Impostazioni</button>
+                    <button class="btn-settings" style="margin-top: 15px;" onclick="openSettingsModal('${roleName}')">⚙️ Impostazioni (${settingsCount})</button>
                 `;
                 container.appendChild(cardDiv);
             });
