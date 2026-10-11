@@ -766,6 +766,34 @@
                 "./img/Ludopatico 1 impostazioni.jpg", 
                 "./img/Ludopatico 2 impostazioni.jpg", 
                 "./img/Ludopatico 3 impostazioni.jpg"
+            ],
+            "Alchimista": [
+                "./img/Alchimista 1 Impostazioni.jpg",
+                "./img/Alchimista 2 Impostazioni.jpg"
+            ],
+            "Giudice": [
+                "./img/Giudice 1 Impostazioni.jpg",
+                "./img/Giudice 2 Impostazioni.jpg"
+            ],
+            "Medico": [
+                "./img/Medico 1 Impostazioni.jpg",
+                "./img/Medico 2 Impostazioni.jpg"
+            ],
+            "Onnisciente": [
+                "./img/Onnisciente 1 Impostazioni.jpg",
+                "./img/Onnisciente 2 Impostazioni.jpg"
+            ],
+            "Prestigiatore": [
+                "./img/Prestigiatore 1 Impostazioni.jpg",
+                "./img/Prestigiatore 2 Impostazioni.jpg"
+            ],
+            "Riparatore": [
+                "./img/Riparatore 1 Impostazioni.jpg",
+                "./img/Riparatore 2 Impostazioni.jpg"
+            ],
+            "Sceriffo": [
+                "./img/Sceriffo 1 Impostazioni.jpg",
+                "./img/Sceriffo 2 Impostazioni.jpg"
             ]
         };
 
@@ -827,7 +855,6 @@
             }, 1500);
         }
 
-        // Funzione per rigenerare una singola carta
         function rerollCard(index) {
             const roleData = drawnRoles[index];
             const newRole = getRandomRole(roleData.categoryKey);
@@ -939,7 +966,7 @@
             
             let imagesToLoad = specialSettingsMap[roleName] 
                 ? specialSettingsMap[roleName] 
-                : [`./img/${roleName} impostazioni.jpg`];
+                : [`./img/${roleName} Impostazioni.jpg`];
             
             imagesToLoad.forEach(src => {
                 let img = document.createElement("img");
