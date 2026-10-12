@@ -975,6 +975,16 @@
                 img.src = src;
                 img.className = "modal-content";
                 img.alt = `Impostazioni ${roleName}`;
+                
+                // Fallback automatico: se fallisce il caricamento, prova con la "i" minuscola
+                img.onerror = function() {
+                    if (this.src.includes("Impostazioni.jpg")) {
+                        this.src = this.src.replace("Impostazioni.jpg", "impostazioni.jpg");
+                    } else if (this.src.includes("impostazioni.jpg")) {
+                        this.src = this.src.replace("impostazioni.jpg", "Impostazioni.jpg");
+                    }
+                };
+
                 container.appendChild(img);
             });
             
