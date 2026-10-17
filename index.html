@@ -193,8 +193,47 @@
             transition: transform 0.2s;
             border: 4px solid #000;
             animation: popIn 0.4s ease-out; 
+            position: relative; 
+            overflow: hidden;   
         }
         .card:hover { transform: scale(1.03) translateY(-5px); }
+        
+        /* Effetto luccichio */
+        .card::before {
+            content: "";
+            position: absolute;
+            top: -150%;
+            left: -50%;
+            width: 200%;
+            height: 50%;
+            background: linear-gradient(
+                to bottom,
+                rgba(255, 255, 255, 0) 0%,
+                rgba(255, 255, 255, 0.3) 50%,
+                rgba(255, 255, 255, 0) 100%
+            );
+            transform: rotate(25deg);
+            pointer-events: none;
+            z-index: 10;
+            opacity: 0;
+        }
+
+        .card:hover::before {
+            opacity: 1;
+            animation: shineEffect 12s infinite;
+        }
+
+        @keyframes shineEffect {
+            0% {
+                top: -150%;
+            }
+            10% {
+                top: 250%; /* Il luccichio attraversa la carta in 1.2 secondi (10% di 12s) */
+            }
+            100% {
+                top: 250%; /* Rimane invisibile per il resto dei 12 secondi per poi ripetere */
+            }
+        }
         
         @keyframes popIn {
             0% { opacity: 0; transform: scale(0.8); }
@@ -209,6 +248,8 @@
             min-height: 250px;
             object-fit: contain;
             filter: drop-shadow(0px 6px 6px rgba(0,0,0,0.6));
+            position: relative;
+            z-index: 1;
         }
         .card-title { 
             font-size: 28px; 
@@ -220,6 +261,8 @@
                  2px -2px 0 #000,
                 -2px  2px 0 #000,
                  2px  2px 0 #000;
+            position: relative;
+            z-index: 1;
         }
         .card-category { 
             font-size: 16px; 
@@ -229,6 +272,8 @@
             padding: 6px 15px; 
             border-radius: 20px;
             border: 2px solid #000;
+            position: relative;
+            z-index: 1;
         }
         .card-description {
             font-size: 15px;
@@ -246,6 +291,8 @@
             border-right: 2px solid #000;
             border-top: 2px solid #000;
             border-bottom: 2px solid #000;
+            position: relative;
+            z-index: 1;
         }
 
         /* Pulsanti interni alla carta */
@@ -255,6 +302,8 @@
             margin-top: 15px;
             width: 100%;
             justify-content: center;
+            position: relative;
+            z-index: 11;
         }
 
         .btn-settings, .btn-reroll {
@@ -620,7 +669,7 @@
             "Giudice": "Sei un astronauta con la capacità di emettere una sentenza su un giocatore durante la riunione. Se il bersaglio è malvagio, verrà ucciso, ma se invece è buono sarai tu a morire. I client moddati vedranno l'icona di un martelletto accanto ai nomi dei giocatori, quelli normali invece dovranno digitare in chat /cmd tl [id], dove l'id è il numerino che appare accanto ai nomi dei giocatori e va scritto senza parentesi.",
             "Giullare": "Sei un neutrale con la capacità di vincere da solo facendoti espellere tramite i voti durante i meeting. Tuttavia, perdi la partita se sei ancora vivo alla fine del gioco. Puoi usare i condotti ma non spostarti da un condotto all'altro. (nessun tasto abilità)",
             "Granatiere": "Sei un astronauta con la capacità di lanciare una granata stordente che acceca gli Impostori (tasto PET). In base alle impostazioni, la granata può colpire anche i Neutrali.",
-            "Guardiano Notturno": "Sei un astronauta con la capacità di non poter essere ucciso durante il sabotaggio delle luci.",
+            "Guardiano Notturno": "Sei un astronauta con la capacità di non poter essere ucciso durante il sabotaggio delle lights.",
             "Incantatore": "Sei un membro della congrega con la capacità di incantare un giocatore per farlo apparire come membro della Congrega agli investigatori degli astronauti. Quando un giocatore incantato viene ucciso, la causa della morte sarà casuale. Se potenziato dal Necronomicon, ottieni l'abilità di uccidere (facendo doppio clic con il tasto UCCIDI su qualcuno).",
             "Incursore": "Sei un astronauta con la capacità di uccidere chiunque, ma solo una volta per partita. Dopo aver effettuato l'uccisione, potrai dedicarti a completare le tue task. In base alle impostazioni, potresti essere in grado di usare i condotti (vent).",
             "Indovino Malvagio": "Sei un impostore con la capacità di indovinare i ruoli di Astronauti, Neutrali e Congrega durante i meeting. Se indovini un ruolo, il giocatore con quel ruolo morirà, altrimenti sarai tu stesso a morire suicidandoti. Nei client moddati per indovinare apparirà un mirino a fianco ad ogni giocatore e poi si potrà scegliere il ruolo, in quelli non moddati si dovrà usare il comando in chat /cmd bt id ruolo.",
@@ -656,7 +705,7 @@
             "Moderatore": "Sei un astronauta con la capacità di conoscere i ruoli dei giocatori indovinati e sapere se qualcuno sbaglia a indovinare. Vedi anche se vengono usati altri comandi riunione che altrimenti rimarrebbero nascosti.",
             "Necrologo": "Sei un neutrale con la capacità di indovinare i ruoli dei giocatori morti utilizzando un apposito comando in chat. Devi indovinare un certo numero di ruoli per poter vincere insieme alla squadra vincitrice alla fine della partita. Per indovinare, i client moddati vedranno un mirino accanto ai giocatori. I client normali dovranno digitare in chat /cmd bt id ruolo, dove l'id è il numerino che appare accanto ai nomi giocatore seguito dal ruolo che vogliono indovinare tra quelli scelti dall'host.",
             "Ninja": "Sei un impostore con la capacità di poter uccidere discretamente gli altri giocatori. Marchi un giocatore con il tasto UCCIDI e, dopo un certo periodo di tempo, puoi premere il tasto SVANISCI per teletrasportarti dal giocatore marchiato, uccidendolo e diventando invisibile per alcuni secondi.",
-            "Non-Morto": "Sei un astronauta con la capacità di essere vivo durante il round e morto durante le riunioni. Devi completare tutti i tuoi compiti per sopravvivere alle riunioni e fornire agli astronauti le informazioni che hai appreso dai morti, con cui puoi anche chattare.",
+            "Non-Morto": "Sei un astronauta con la capacità di essere vivo durante il round e morto durante le riunioni. Devi completare tutti i tuoi compiti per sopravvive alle riunioni e fornire agli astronauti le informazioni che hai appreso dai morti, con cui puoi anche chattare.",
             "Occultista": "Sei un neutrale con la capacità di hackerare i giocatori per impedire loro di uccidere, usare i condotti, sabotare o segnalare corpi per un periodo limitato. Puoi inoltre camuffarti temporaneamente e ricaricare le tue abilità più velocemente nascondendoti nei condotti. (tasto MUTA)",
             "Ombra": "Sei un membro della congrega con la capacità di sparire per mimetizzarti. Potresti essere in grado di mimetizzare la tua squadra usando il tasto UCCIDI su di loro. Con il Necronomicon, puoi uccidere e diventare invisibile dopo averlo fatto. Le tue abilità di mimetizzazione potrebbero essere trasformate in invisibilità. (Con l'abilità di mimetizzare i compagni di squadra, fai un clic singolo con il tasto UCCIDI per usarla e un doppio clic per uccidere normalmente).",
             "Onnisciente": "Sei un astronauta con la capacità di vedere il numero di impostori e assassini neutrali rimasti (tasto PET).",
