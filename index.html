@@ -79,6 +79,7 @@
         .btn-neutrali-passivi { background-color: #fdcb6e; color: #000; }
         .btn-neutrali-assassini { background-color: #e17055; color: #fff; }
         .btn-congrega { background-color: #6c5ce7; color: #fff; }
+        .btn-modificatori { background-color: #1e8449; color: #fff; }
 
         .btn-obs { background-color: #2f3640; color: #f5f6fa; border-color: #fbc531; margin-left: 20px; }
         .btn-obs.active-obs { background-color: #fbc531; color: #2f3640; border-color: #fff; }
@@ -398,6 +399,7 @@
         <button class="nav-btn btn-neutrali-passivi" onclick="switchTab('neutrali_passivi', this)">Neutrali Passivi</button>
         <button class="nav-btn btn-neutrali-assassini" onclick="switchTab('neutrali_assassini', this)">Neutrali Assassini</button>
         <button class="nav-btn btn-congrega" onclick="switchTab('congrega', this)">Congrega</button>
+        <button class="nav-btn btn-modificatori" onclick="switchTab('modificatori', this)">Modificatori</button>
         <button class="nav-btn btn-obs" id="obsToggleBtn" onclick="toggleOBSMode()">🎥 Modalità OBS: OFF</button>
     </div>
     
@@ -493,7 +495,6 @@
             "Dispersore": "./img/Dispersore.png",
             "Dittatore": "./img/Dittatore.png",
             "Dottore": "./img/Dottore.png",
-            "Druido": "./img/Druido.png",
             "Enigmista": "./img/Enigmista.png",
             "Esecutore": "./img/Esecutore.png",
             "Esorcista": "./img/Esorcista.png",
@@ -519,6 +520,7 @@
             "Innocente": "./img/Innocente.png",
             "Inquirente": "./img/Inquirente.png",
             "Inquisitore": "./img/Inquisitore.png",
+            "Installatore": "./img/Installatore.png",
             "Intercettatore": "./img/Intercettatore.png",
             "Inversore": "./img/Inversore.png",
             "Invocatore di spiriti": "./img/Invocatore Di Spiriti.png",
@@ -611,7 +613,7 @@
             "Accecatore": "Sei un impostore con la capacità di accecare gli altri giocatori (vedrai i loro nomi in nero) lanciando delle flashbang col tasto SVANISCI. I giocatori accecati avranno lo schermo nero per 5 secondi. Gli altri impostori sono immuni alle flashbang.",
             "Accumulatore": "Sei un neutrale con la capacità di iniziare con una base da astronauta e svolgere le task per ridurre il tuo tempo di ricarica delle uccisioni. Puoi infine trasformarti in un killer neutrale con il tempo di ricarica accumulato per uccidere tutti e vincere. (tasto PET)",
             "Agitatore": "Sei un neutrale con la capacità di passare una bomba agli altri giocatori, in modo simile al gioco della Patata Bollente. Chi possiede la bomba quando viene indetta una riunione, o chi cerca di passarla a ruoli immuni come la Pestilenza, muore all'istante. (tasto UCCIDI)",
-            "Alchimista": "Sei un astronauta con la capacità di creare pozioni completando le task. Le pozioni create appariranno sotto il nome del giocatore con la relativa descrizione e istruzioni (tasto PET per usare le pozioni). Puoi ottenere 7 pozioni diverse:\n1) Pozione invisibilità\n2) Pozione riparazione\n3) Pozione scudo\n4) Pozione vista\n5) Pozione velocità\n6) Pozione mortale\n7) Pozione teletrasporto",
+            "Alchimista": "Sei un astronauta con la capacità di creare pozioni completando le task. Le pozioni create appariranno sotto il nome del giocatore con la relative descrizione e istruzioni (tasto PET per usare le pozioni). Puoi ottenere 7 pozioni diverse:\n1) Pozione invisibilità\n2) Pozione riparazione\n3) Pozione scudo\n4) Pozione vista\n5) Pozione velocità\n6) Pozione mortale\n7) Pozione teletrasporto",
             "Altruista": "Sei un astronauta con la capacità di rianimare un giocatore morto segnalando il suo corpo (tasto SEGNALA). Il giocatore rianimato potrà continuare a giocare come se non fosse mai morto. Se rianimi un giocatore, ti sacrificherai. Puoi passare dalla modalità rianimazione a quella di segnalazione premendo il tasto PET.",
             "Ammaliatore": "Sei un neutrale con la capacità di ammaliare un giocatore non neutrale per renderlo parte del tuo team con nuove condizioni di vittoria. Il team degli ammaliati vince la partita se supera in numero gli astronauti e se rimangono solo queste due squadre in gioco. (tasto UCCIDI)",
             "Amministratore": "Sei un astronauta con la capacità di vedere la mappa admin da ovunque. Come client moddato, ogni volta che apri la mappa (e hai usi dell'abilità rimasti), apparirà la mappa admin. Come client vanilla, puoi premere il tasto PET per ricevere una notifica che indica quante persone si trovano nelle diverse stanze della nave (essenzialmente la mappa admin).",
@@ -656,7 +658,6 @@
             "Dispersore": "Sei un impostore con la capacità di teletrasportare gli altri (eccetto te stesso) vicino ad una botola casuale utilizzando il tasto SVANISCI. Più uccisioni effettuerai, più potrai utilizzare questa abilità.",
             "Dittatore": "Sei un astronauta con la capacità di terminare istantaneamente la riunione votando qualcuno. Questo comporterà l'espulsione immediata del bersaglio, ma causerà anche la tua morte subito dopo.",
             "Dottore": "Sei un astronauta con la capacità di visualizzare la causa della morte dei giocatori e accedere ai loro parametri vitali finché la tua batteria è operativa.",
-            "Druido": "Sei un astronauta con la capacità di piazzare un innesco dove ti trovi (tasto PET). Se un giocatore passa vicino all'innesco, verrai avvisato.",
             "Enigmista": "Sei un astronauta con la capacità di ricevere un indizio casuale sull'assassino a ogni riunione. A seconda dell'impostazione, potresti dover segnalare il corpo per riceverne uno. Più missioni completi, più gli indizi diventano precisi.",
             "Esecutore": "Sei un neutrale con la capacità di far espellere il tuo bersaglio durante le riunioni per vincere. Il bersaglio è indicato da un simbolo di diamante accanto al nome. Se il bersaglio muore in altri modi, puoi diventare un Astronauta, un Giullare o un Opportunista. (nessun tasto abilità)",
             "Esorcista": "Sei un impostore con la capacità di uccidere chiunque scriva un messaggio in chat durante i meeting digitando il comando /exo in chat. Il comando può essere usato solo due volte a partita e per un certo periodo di tempo prestabilito dall'host.",
@@ -682,6 +683,7 @@
             "Innocente": "Sei un neutrale con la capacità di incastrare un altro giocatore, costringendolo a ucciderti all'istante. Se il giocatore incastrato viene successivamente espulso durante la votazione, ottieni la vittoria. (tasto UCCIDI)",
             "Inquirente": "Sei un astronauta con la capacità di verificare se un giocatore ha un ruolo specifico, con una certa probabilità di fallimento. Per i client moddati apparirà un pulsante accanto ai nomi dei giocatori, quelli non moddati invece dovranno digitare in chat /cmd controlla id ruolo.",
             "Inquisitore": "Sei un astronauta con la capacità di vedere di chi conosce il ruolo un giocatore, scegliendo dal menu MUTAFORMA durante i meeting.",
+            "Installatore": "Sei un astronauta con la capacità di piazzare un innesco dove ti trovi (tasto PET). Se un giocatore passa vicino all'innesco, verrai avvisato.",
             "Intercettatore": "Sei un impostore con la capacità di rilevare Astronauti o Neutrali nelle vicinanze dei dispositivi di controllo (Telecamere, Admin, ecc.). Non puoi sapere se effettivamente un giocatore stia facendo uso dei dispositivi, ma puoi usare il menù MUTAFORMA per mandare un segnale di morte imminente a tutti coloro che lo stiano facendo.",
             "Inversore": "Sei un impostore con la capacità di invertire temporaneamente i comandi di un altro giocatore attraverso l'uso del menù MUTAFORMA.",
             "Invocatore di spiriti": "Sei un neutrale con la capacità di trasformare le tue vittime in Spiriti Malvagi dopo la morte. Questi spiriti ti aiutano a vincere congelando gli avversari, bloccandone la visuale o fornendoti uno scudo temporaneo contro i tentativi di uccisione. (tasto UCCIDI)",
@@ -689,7 +691,7 @@
             "Ispettore": "Sei un astronauta con la capacità di verificare se due giocatori appartengono alla stessa squadra. Gli assassini Neutrali contano come una squadra unica, mentre i Neutrali non assassini contano come squadre separate. Per i client moddati apparirà un pulsante accanto ai nomi dei giocatori, quelli non moddati invece dovranno digitare in chat /cmd cp [id 1] [id 2].",
             "Istigatore": "Sei un impostore con la capacità di far si che due giocatori si uccidano a vicenda. Marchi un primo giocatore (tasto UCCIDI) e dopo alcuni secondi ne puoi marchiare un altro (sempre con il tasto UCCIDI). Quando i due giocatori marchiati si trovano a distanza di uccisione, si uccideranno a vicenda.",
             "Ladro del Tempo": "Sei un impostore con la capacità di ridurre la durata del meeting effettuando uccisioni. Più uccisioni verranno fatte, meno durerà il meeting.",
-            "Limitatore": "Sei un impostore con la capacità di bloccare il ruolo degli altri giocatori premendo una volta il tasto UCCIDI. Il giocatore bloccato non potrà eseguire nessuna azione per un certo periodo di tempo. Premendo due volte il tasto UCCIDI verrà eseguita un'uccisione normale.",
+            "Limitatore": "Sei un impostore con la capacità di bloccare il ruolo degli altri giocatori premendo una volta il tasto UCCIDI. Il giocatore bloccato non potrà eseguire nessuna azione per un certo periodo di time. Premendo due volte il tasto UCCIDI verrà eseguita un'uccisione normale.",
             "Ludopatico": "Sei un impostore con la capacità di generare degli effetti randomici dopo ogni uccisione. Questi effetti possono essere al 50% positivi o negativi.",
             "Lupo Mannaro": "Sei un neutrale con la capacità di entrare in furia utilizzando i condotti, ottenendo così una ricarica dell'uccisione molto breve. Non puoi uccidere quando non sei in furia, dato che quest'ultima ha una durata limitata e un proprio tempo di ricarica. (tasto CONDOTTO)",
             "Macchina Assassina": "Sei un impostore con una ricarica uccisione molto bassa. Tuttavia non puoi usare i condotti, hai una visuale ridotta e non puoi sabotare, segnalare corpi o indire meeting d'emergenza.",
@@ -769,14 +771,15 @@
         };
 
         const basePools = {
-            "astronauti_controllo": ["Accalappiatore", "Amministratore", "Analista", "Camaleonte", "Candeliere", "Capitano", "Cartomante", "Controllore", "Cospiratore", "Crittografo", "Dottore", "Druido", "Enigmista", "Inquirente", "Inquisitore", "Ispettore", "Patologo", "Premonitore", "Psichico", "Spia", "Telecomunicatore", "Testimone", "Vedetta", "Veggente", "Moderatore", "Onnisciente", "Oracolo", "Non-Morto"],
+            "astronauti_controllo": ["Accalappiatore", "Amministratore", "Analista", "Camaleonte", "Candeliere", "Capitano", "Cartomante", "Controllore", "Cospiratore", "Crittografo", "Dottore", "Installatore", "Enigmista", "Inquirente", "Inquisitore", "Ispettore", "Patologo", "Premonitore", "Psichico", "Spia", "Telecomunicatore", "Testimone", "Vedetta", "Veggente", "Moderatore", "Onnisciente", "Oracolo", "Non-Morto"],
             "astronauti_protezione": ["Medico", "Altruista", "Bodyguard", "Crociato", "Protettore", "Giardiniere", "Confessore", "Pacifista", "Matematico"],
             "astronauti_vari": ["Cameraman", "Sindaco", "Barbiere", "Celebrità", "Demolitore", "Fuggitivo", "Giornalista", "Guardiano Notturno", "Portalista", "Canalista", "Alchimista", "Dittatore", "Miracolato", "Chiacchierone", "Granatiere", "Maestro del tempo", "Menestrello", "Prestigiatore", "Riparatore", "Astrale", "Scambiatore", "Infiltrato", "Buttafuori", "Inibitore", "Trasportatore"],
             "neutrali_passivi": ["Amnesico", "Avvocato", "Necrologo", "Postino", "Avvoltoio", "Esecutore", "Giullare", "Innocente", "Profeta"],
             "impostori": ["Abissale", "Assessore", "Bombarolo", "Cacciatore di taglie", "Carnefice", "Cronomante", "Mafioso", "Indovino Malvagio", "Macchina Assassina", "Ninja", "Sacrificatore", "Strega", "Tiratore Rapido", "Trappolatore", "Influencer", "Camuffatore", "Pulitore", "Inversore", "Ipnotista", "Istigatore", "Ladro del Tempo", "Limitatore", "Pietrificatore", "Revocatore", "Ricattatore", "Rivendicatore", "Scambista", "Dispersore", "Ventriloquo", "Accecatore", "Anonimo", "Burattinaio", "Evasore", "Fabbro", "Falsario", "Ingannatore", "Posticipatore", "Swooper", "Vampiro", "Veggente Malvagio", "Esorcista", "Ludopatico", "Intercettatore", "Ostruzionista", "Segugio Malvagio", "Spaventatore", "Macellaio", "Tiranno", "Trasformista", "Sorvegliante", "Possessore"],
             "astronauti_uccisore": ["Astrologo", "Giudice", "Incursore", "Retribuzionista", "Sceriffo", "Sentinella", "Veterano"],
             "neutrali_assassini": ["Accumulatore", "Agitatore", "Borseggiatore", "Collezionista di Anime", "Corruttore", "Ammaliatore", "Invocatore di spiriti", "Lupo Mannaro", "Mago", "Occultista", "Pellicano", "Ritualista", "Serial Killer", "Persuasore", "Spirito", "Untore", "Maestro delle armi"],
-            "congrega": ["Augure", "Banshee", "Bracconiere", "Dea", "Evocatore", "Incantatore", "Maestro Voodoo", "Mietitore", "Ombra", "Pozionista", "Sirena", "Tessitore di Sogni"]
+            "congrega": ["Augure", "Banshee", "Bracconiere", "Dea", "Evocatore", "Incantatore", "Maestro Voodoo", "Mietitore", "Ombra", "Pozionista", "Sirena", "Tessitore di Sogni"],
+            "modificatori": ["Cecchino", "Celebratore", "Fuochista"]
         };
 
         const sequenceLabels = {
@@ -787,7 +790,8 @@
             "impostori": "Impostori",
             "astronauti_uccisore": "Astronauti - Uccisore",
             "neutrali_assassini": "Neutrali - Assassini",
-            "congrega": "Congrega"
+            "congrega": "Congrega",
+            "modificatori": "Modificatori"
         };
 
         const drawSequence = [
