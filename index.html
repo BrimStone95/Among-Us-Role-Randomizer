@@ -196,7 +196,7 @@
             animation: popIn 0.4s ease-out; 
             position: relative; 
             overflow: hidden;   
-            isolation: isolate; /* Forza il contenimento dell'effetto nei bordi arrotondati */
+            isolation: isolate;
         }
         .card:hover { transform: scale(1.03) translateY(-5px); }
         
@@ -222,20 +222,13 @@
 
         .card:hover::before {
             opacity: 1;
-            /* Attiva l'animazione di 12 secondi ciclica */
             animation: shineEffect 12s infinite;
         }
 
         @keyframes shineEffect {
-            0% {
-                left: -150%;
-            }
-            25% {
-                left: 150%; /* L'effetto ci mette 3 secondi ad attraversare la carta */
-            }
-            100% {
-                left: 150%; /* Resta nascosto per i restanti 9 secondi */
-            }
+            0% { left: -150%; }
+            25% { left: 150%; }
+            100% { left: 150%; }
         }
         
         @keyframes popIn {
@@ -639,10 +632,12 @@
             "Cameraman": "Sei un astronauta con la capacità di teletrasportarti istantaneamente nella stanza della sicurezza (tasto PET).",
             "Camuffatore": "Sei un impostore con la capacità di rendere tutti i giocatori uguali tra loro (tutti diventeranno grigi) con il tasto SVANISCI. L'effetto è applicato fino a quando non tornerai normale.",
             "Canalista": "Sei un astronauta con la capacità di entrare nei condotti per bloccarli. Nessuno può entrare nei condotti bloccati, eccetto gli Astronauti se l'impostazione è attiva. Verrai notificato se qualcuno prova a usare il condotto che hai bloccato. I condotti bloccati si resettano dopo ogni riunione.",
-            "Candeliere": "Sei un astronauta con la capacità di accendere una nuova candela completando una missione, il che imposta la tua vista al massimo. Con il passare del tempo e il consumarsi della candela, la tua vista si ridurrà progressivamente. Poiché usi le candele, sei immune al sabotaggio delle luci.",
+            "Candeliere": "Sei un astronauta con la capacità di accendere una nuova candela completando una missione, il che imposta la tua vista al massimo. Con il passare del tempo e il consumarsi della candela, la tua vista si ridurrà progressivamente. Poiché usi le candele, sei immune al sabotaggio delle lights.",
             "Capitano": "Sei un astronauta con la capacità di vedere sempre chi si trova nella tua stessa stanza. Inoltre, nei meeting, potrai utilizzare il tuo menù MUTAFORMA per scegliere un giocatore e, nel meeting successivo, riceverai l'elenco delle stanze in cui è entrato (in ordine) durante il round precedente.",
             "Carnefice": "Sei un impostore con la capacità di ridurre la tua ricarica uccisione dopo ogni uccisione effettuata.",
             "Cartomante": "Sei un astronauta con la capacità di ottenere un indizio sul ruolo di un giocatore selezionandolo con il menu MUTAFORMA. Una volta che tutte le tue task saranno completate, non riceverai più solo un indizio, ma scoprirai il ruolo esatto del giocatore votato.",
+            "Cecchino": "Sei un modificatore che ti permette di eliminare un bersaglio da grande distanza.",
+            "Celebratore": "Sei un modificatore che festeggia l'eliminazione degli avversari.",
             "Celebrità": "Sei un astronauta con la capacità di avere l'icona di una stella accanto al tuo nome e puoi essere ucciso solo se l'assassino si trova da solo con te. Gli Indovini (Guessers) non possono indovinare il tuo ruolo.",
             "Chiacchierone": "Sei un astronauta con la capacità di marchiare un giocatore come tuo obiettivo cliccando sulla palla di cristallo accanto al nome (client moddati) o selezionandolo col menù MUTAFORMA (client normali). Quando verrai eliminato, tutti scopriranno il ruolo del giocatore marchiato.",
             "Collezionista di Anime": "Sei un neutrale con la capacità di uccidere i tuoi bersagli facendo in modo che gli altri continuino a vederli come se fossero ancora in vita. Gli obiettivi muoiono completamente solo al momento in cui viene convocata una riunione. (tasto UCCIDI)",
@@ -666,7 +661,7 @@
             "Fabbro": "Sei un impostore con la capacità di falsare la causa della morte delle tue vittime. Per far ciò devi digitare in chat il seguente comando: /cmd fabbrica e aggiungere una delle seguenti cause di morte: AFK, Allergia, Vergogna, Presunto, Asma, Sfortuna, Bancarotta, Morso, Buggato, Esploso, Collassato, Consumato, Maledetto, Assordato, Distrutto, Demolito, Non Ha Votato, Disconnesso, Malato, Smembrato, Trascinato, Annegato, Ecato, Giustiziato, Cuore Infranto, Spaventato, Indovinato, Hackerato, Infetto, Iettato, Sacrificato, Ucciso, Lava, Fulmine, Perdita Di Sangue, Strangolato, Dilaniato, Meteorizzato, Cilecca, Indovinello Errato, Negoziazione, Fuori Ossigeno, Esausto, Pattugliato, Avvelenato, Quantizzato, RNG, Retribuzione, Vendetta, Sacrificio, Spazzato, Sparo, Votazione Saltata, Cecchinato, Stregato, Pietrificato, Punto, Suicidio, Affondato, Tasse, Bruciato, Tornado, Intrappolato, Espulso, Sterminato, Risposta Sbagliata, Istigato, Altro.",
             "Falsario": "Sei un impostore con la capacità di assegnare finti ruoli ai giocatori morti. Per far ciò, i client moddati avranno un pulsante incudine accanto al nome dei giocatori durante i meeting, i client non moddati dovranno invece eseguire in chat il comando /cmd forgia id ruolo, dove id è il numero accanto al nome del giocatore e il ruolo potrà essere scelto soltanto tra quelli selezionati dall'host.",
             "Fuggitivo": "Sei un astronauta con la capacità di segnare una posizione e successivamente teletrasportarti di nuovo in quel punto (tasto PET).",
-            "Fuochista": "Sei un impostore con la capacità di infiammare altri giocatori...",
+            "Fuochista": "Sei un impostore con la capacità di piazzare fino a tre bombe d'artificio usando il tasto SVANISCI o ACCAREZZA. Se rimani l'ultimo Impostore in vita, puoi usare lo stesso comando per far esplodere le bombe e infliggere danni ad area. Ma fai attenzione: le esplosioni possono colpire anche te. Se le bombe eliminano tutti gli astronauti rimasti, la vittoria sarà degli Impostori.",
             "Giardiniere": "Sei un astronauta con la capacità di piazzare una pianta (tasto PET). Dopo la riunione successiva, la pianta sarà cresciuta e nessuno potrà uccidere direttamente nelle sue vicinanze. Tuttavia, una volta che una pianta ha bloccato un tentativo di uccisione, scompare.",
             "Giornalista": "Sei un astronauta con la capacità di scrivere degli appunti tramite comandi in chat. Quando muori, tutti i giocatori vedranno le tue note nella riunione successiva. I comandi da inserire sono i seguenti: /cmd note add [messaggio] per aggiungere note, /cmd note remove [messaggio] per rimuovere una nota, /cmd note clear per rimuovere tutte le note e /cmd note view per vedere tutte le note.",
             "Giudice": "Sei un astronauta con la capacità di emettere una sentenza su un giocatore durante la riunione. Se il bersaglio è malvagio, verrà ucciso, ma se invece è buono sarai tu a morire. I client moddati vedranno l'icona di un martelletto accanto ai nomi dei giocatori, quelli normali invece dovranno digitare in chat /cmd tl [id], dove l'id è il numerino che appare accanto ai nomi dei giocatori e va scritto senza parentesi.",
@@ -736,7 +731,7 @@
             "Revocatore": "Sei un impostore con la capacità di cancellare il ruolo dei giocatori astronauti, riportandoli al ruolo base, cliccando una volta col tasto UCCIDI. Cliccando invece due volte verrà eseguita una normale uccisione.",
             "Ricattatore": "Sei un impostore con la capacità di silenziare i giocatori durante il meeting premendo il tasto SVANISCI. Il giocatore ricattato avrà una X rossa accanto al suo nome e non potrà parlare, votare o scrivere in chat fino al round dopo.",
             "Riparatore": "Sei un astronauta con la capacità di usare i condotti in qualsiasi momento e di riparare velocemente i sabotaggi. Puoi riparare Reattore, Ossigeno e Comunicazioni da un solo terminale, le luci con un solo interruttore e aprire automaticamente tutte le porte di un settore. Inoltre, se consentito dall'host, puoi anche riparare i sabotaggi pur non essendo fisicamente nelle stanze delle crisi col tasto PET.",
-            "Ritualista": "Sei un neutrale con la capacità di svelare i ruoli degli altri giocatori o di ucciderli a seconda del numero di clic. Con un singolo clic riveli il ruolo del bersaglio, mentre con un doppio clic lo uccidi; tuttavia, una volta esauriti gli usi per rivelare, il tasto potrà essere usato solo per attacchi normali. (tasto UCCIDI)",
+            "Ritualista": "Sei un neutrale con la capacità di svelare i ruoli degli altri giocatori o di ucciderli a seconda del numero di clic. Con un singolo clic reveli il ruolo del bersaglio, mentre con un doppio clic lo uccidi; tuttavia, una volta esauriti gli usi per rivelare, il tasto potrà essere usato solo per attacchi normali. (tasto UCCIDI)",
             "Rivendicatore": "Sei un impostore con la capacità di avere voti aggiuntivi durante il meeting.",
             "Sacrificatore": "Sei un impostore con la capacità di marchiare massimo due giocatori cliccando una volta il tasto UCCIDI su di loro. I giocatori marchiati moriranno nel momento in cui morirai anche tu. Cliccando due volte il tasto UCCIDI si eseguirà una normale uccisione.",
             "Scambiatore": "Sei un astronauta con la capacità di scambiare i voti ricevuti da due giocatori. Ai client moddati saranno mostrate delle frecce accanto ai nomi dei giocatori, quelli non moddati dovranno digitare in chat il comando /cmd sw id due volte.",
@@ -759,7 +754,7 @@
             "Tiranno": "Sei un impostore con la capacità di annullare i voti degli altri giocatori (verrà assegnato loro il modificatore DEGRADATO) cliccando una volta il tasto UCCIDI (doppio click per uccidere normalmente). Vedrai i giocatori degradati in nero. Tutti i voti saranno ripristinati una volta che muori.",
             "Tiratore Rapido": "Sei un impostore con la capacità di immagazzinare proiettili (tasto SVANISCI). Fino a quando hai dei proiettili immagazzinati, la tua ricarica uccisione è 0. Durante i meeting però, tutti i proiettili andranno persi tranne uno.",
             "Trappolatore": "Sei un impostore con la capacità di usare il tuo tasto SVANISCI per piazzare trappole invisibili che uccidono istantaneamente gli astronauti che le calpestano.",
-            "Trasformista": "Sei un impostore con la capacità di cambiare l'aspetto di due giocatori, facendoli mutaformare in qualcun altro per un certo periodo di tempo. (tasto MUTAFORMA)",
+            "Trasformista": "Sei un impostore con la capacità di cambiare l'aspetto di due giocatori, facendoli mutaformare in qualcun altro per un certo periodo di time. (tasto MUTAFORMA)",
             "Trasportatore": "Sei un astronauta con la capacità di scambiare istantaneamente le posizioni di due bersagli (tasto MUTAFORMA) dopo aver completato le tue task.",
             "Untore": "Sei un neutrale con la capacità di infettare gli altri giocatori al fine di evolverti e trasformarti nella letale Pestilenza. Una volta completata la trasformazione, diventi quasi immortale, ottieni la capacità di uccidere direttamente gli avversari e contrattacchi letalmente chiunque provi a colpirti. (tasto UCCIDI)",
             "Vampiro": "Sei un impostore con la capacità di mordere gli altri giocatori cliccando una volta il tasto UCCIDI. I giocatori morsi moriranno dopo 10 secondi, dandoti così un potenziale alibi. Inoltre puoi anche effettuare uccisioni normali cliccando due volte il tasto UCCIDI.",
@@ -775,11 +770,11 @@
             "astronauti_protezione": ["Medico", "Altruista", "Bodyguard", "Crociato", "Protettore", "Giardiniere", "Confessore", "Pacifista", "Matematico"],
             "astronauti_vari": ["Cameraman", "Sindaco", "Barbiere", "Celebrità", "Demolitore", "Fuggitivo", "Giornalista", "Guardiano Notturno", "Portalista", "Canalista", "Alchimista", "Dittatore", "Miracolato", "Chiacchierone", "Granatiere", "Maestro del tempo", "Menestrello", "Prestigiatore", "Riparatore", "Astrale", "Scambiatore", "Infiltrato", "Buttafuori", "Inibitore", "Trasportatore"],
             "neutrali_passivi": ["Amnesico", "Avvocato", "Necrologo", "Postino", "Avvoltoio", "Esecutore", "Giullare", "Innocente", "Profeta"],
-            "impostori": ["Abissale", "Assessore", "Bombarolo", "Cacciatore di taglie", "Carnefice", "Cronomante", "Mafioso", "Indovino Malvagio", "Macchina Assassina", "Ninja", "Sacrificatore", "Strega", "Tiratore Rapido", "Trappolatore", "Influencer", "Camuffatore", "Pulitore", "Inversore", "Ipnotista", "Istigatore", "Ladro del Tempo", "Limitatore", "Pietrificatore", "Revocatore", "Ricattatore", "Rivendicatore", "Scambista", "Dispersore", "Ventriloquo", "Accecatore", "Anonimo", "Burattinaio", "Evasore", "Fabbro", "Falsario", "Ingannatore", "Posticipatore", "Swooper", "Vampiro", "Veggente Malvagio", "Esorcista", "Ludopatico", "Intercettatore", "Ostruzionista", "Segugio Malvagio", "Spaventatore", "Macellaio", "Tiranno", "Trasformista", "Sorvegliante", "Possessore"],
+            "impostori": ["Abissale", "Assessore", "Bombarolo", "Cacciatore di taglie", "Carnefice", "Cronomante", "Mafioso", "Indovino Malvagio", "Macchina Assassina", "Ninja", "Sacrificatore", "Strega", "Tiratore Rapido", "Trappolatore", "Influencer", "Camuffatore", "Pulitore", "Inversore", "Ipnotista", "Istigatore", "Ladro del Tempo", "Limitatore", "Pietrificatore", "Revocatore", "Ricattatore", "Rivendicatore", "Scambista", "Dispersore", "Ventriloquo", "Accecatore", "Anonimo", "Burattinaio", "Evasore", "Fabbro", "Falsario", "Fuochista", "Ingannatore", "Posticipatore", "Swooper", "Vampiro", "Veggente Malvagio", "Esorcista", "Ludopatico", "Intercettatore", "Ostruzionista", "Segugio Malvagio", "Spaventatore", "Macellaio", "Tiranno", "Trasformista", "Sorvegliante", "Possessore"],
             "astronauti_uccisore": ["Astrologo", "Giudice", "Incursore", "Retribuzionista", "Sceriffo", "Sentinella", "Veterano"],
             "neutrali_assassini": ["Accumulatore", "Agitatore", "Borseggiatore", "Collezionista di Anime", "Corruttore", "Ammaliatore", "Invocatore di spiriti", "Lupo Mannaro", "Mago", "Occultista", "Pellicano", "Ritualista", "Serial Killer", "Persuasore", "Spirito", "Untore", "Maestro delle armi"],
             "congrega": ["Augure", "Banshee", "Bracconiere", "Dea", "Evocatore", "Incantatore", "Maestro Voodoo", "Mietitore", "Ombra", "Pozionista", "Sirena", "Tessitore di Sogni"],
-            "modificatori": ["Cecchino", "Celebratore", "Fuochista"]
+            "modificatori": ["Cecchino", "Celebratore"]
         };
 
         const sequenceLabels = {
@@ -1037,7 +1032,6 @@
                 img.className = "modal-content";
                 img.alt = `Impostazioni ${roleName}`;
                 
-                // Fallback automatico: se fallisce il caricamento, prova con la "i" minuscola
                 img.onerror = function() {
                     if (this.src.includes("Impostazioni.jpg")) {
                         this.src = this.src.replace("Impostazioni.jpg", "impostazioni.jpg");
